@@ -1,0 +1,97 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp">
+    <LinearLayout
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginRight="12dp"
+        android:padding="5dp"
+        android:orientation="vertical"
+        android:id="@+id/date_container"
+        >
+        <TextView
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="02"
+
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:id="@+id/assetIconu"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+
+            />
+
+        <TextView
+            android:id="@+id/assetIcon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="1dp"
+            android:text="02 2018"
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="12sp"
+            android:textStyle="bold"
+
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="317dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_toRightOf="@id/date_container"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/product_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingBottom="2dp"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorPrimary"
+            android:text="Chateu"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="12dp"
+        android:padding="2dp"
+        android:orientation="horizontal"
+        android:id="@+id/product_container"
+        android:weightSum="2"
+        >
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/product_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Quantity 400"
+            />
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/product_breakages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Breakeges 8"
+            />
+    </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
