@@ -1,6 +1,5 @@
 package talitha_koum.milipade.com.app.afdis.fragments;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
 import android.content.res.ColorStateList;
@@ -24,13 +23,18 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import talitha_koum.milipade.com.app.afdis.R;
 import talitha_koum.milipade.com.app.afdis.network.ApiClient;
 import talitha_koum.milipade.com.app.afdis.network.ApiInterface;
+import talitha_koum.milipade.com.app.afdis.responses.LoginResponse;
 import talitha_koum.milipade.com.app.afdis.utils.CustomToast;
 import talitha_koum.milipade.com.app.afdis.utils.Utils;
 
@@ -207,32 +211,23 @@ public class Login_Fragment extends Fragment implements OnClickListener {
         progressDialog.dismiss();
         getActivity().finish();
 
-		/*Call<ResponseBody> call = apiService.login(username,  password);
-		call.enqueue(new Callback<ResponseBody>() {
+		Call<LoginResponse> call = apiService.login(username,  password);
+		call.enqueue(new Callback<LoginResponse>() {
 			@Override
-			public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+			public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
 				Toast.makeText(getActivity().getBaseContext(), "response", Toast.LENGTH_LONG).show();
 
-				String tokenType = Authenticator.TOKEN_TYPE;
-				//final Account account = new Account(userId, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
-				Account account = new Account(username, "YOUR ACCOUNT TYPE");
-				AccountManager am = AccountManager.get(getActivity().getBaseContext());
-				am.addAccountExplicitly(account, password, null);
-				accountManager.setPassword(account, password);
-				//setAccountAuthenticatorResult(intent.getExtras());
-				//setResult(RESULT_OK, intent);
-                MySharedPreferences.setLogin(getActivity().getBaseContext(),true);
 				progressDialog.dismiss();
 				getActivity().finish();
 			}
 
 			@Override
-			public void onFailure(Call<ResponseBody> call, Throwable t) {
+			public void onFailure(Call<LoginResponse> call, Throwable t) {
 				//Toast.makeText(getActivity().getBaseContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
 				progressDialog.dismiss();
 
 			}
-		});*/
+		});
 
 	}
 }

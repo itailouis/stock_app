@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             // Opening UserProfileActivity .
             /// Intent intent = new Intent(MainActivity.this, UserAuthActivity.class);
             Intent intent = new Intent(MainActivity.this, UserAuthActivity.class);
-            startActivity(intent);
+            //startActivity(intent);
             //finish();
             populateGeofenceList();
         }

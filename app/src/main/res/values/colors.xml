@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-   <!--
-   <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    -->
+    <!--
+    <color name="colorPrimary">#3F51B5</color>
+     <color name="colorPrimaryDark">#303F9F</color>
+     <color name="colorAccent">#FF4081</color>
+     -->
 
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#1976D2</color>
     <color name="colorAccent">#ffc107</color>
 
+    <color name="transparent">#00000000</color>
+    <color name="viewfinder_frame">#ff000000</color>
+    <color name="viewfinder_laser">#ffff0000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
+    <color name="result_view">#b0000000</color>
 
     <color name="colorTextDisable">#000</color>
     <color name="colorTextPrimary">#000</color>
     <color name="list_divider">#FFF</color>
     <color name="message">#aeaeae</color>
 
- <color name="colorWhite">#ffffff</color>
- <color name="colorBlack">#000000</color>
- <color name="colorGray">#a9a6a6</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorGray">#a9a6a6</color>
 
 
 
- <color name="colorBlue">#017DC7</color>
- <color name="colorYellow">#fde000</color>
- <color name="colorGreen">#1ba104</color>
- <color name="colorRed">#c90d0d</color>
- <color name="colorOrange">#FF5733</color>
- <color name="background_color">#303F9F</color>
- <color name="white">#FFFFFF</color>
+    <color name="colorBlue">#017DC7</color>
+    <color name="colorYellow">#fde000</color>
+    <color name="colorGreen">#1ba104</color>
+    <color name="colorRed">#c90d0d</color>
+    <color name="colorOrange">#FF5733</color>
+    <color name="background_color">#303F9F</color>
+    <color name="white">#FFFFFF</color>
 
- <color name="white_greyish">#EEEEEE</color>
- <color name="button_selectorcolor">#9E9E9E</color>
- <color name="colorWhiteDark">#fff</color>
+    <color name="white_greyish">#EEEEEE</color>
+    <color name="button_selectorcolor">#9E9E9E</color>
+    <color name="colorWhiteDark">#fff</color>
 </resources>

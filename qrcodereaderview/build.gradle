@@ -1,0 +1,76 @@
+buildscript {
+  repositories {
+    jcenter()
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.3.3'
+  }
+}
+
+
+apply plugin: 'com.android.library'
+
+
+def libVersionCode = '2.0.1'
+def siteUrl = 'https://github.com/dlazaro66/QRCodeReaderView/tree/master/QRCodeReaderView-lib'
+def gitUrl = 'https://github.com/dlazaro66/QRCodeReaderView/tree/master/QRCodeReaderView-lib.git'
+
+group = "com.dlazaro66.qrcodereaderview"
+version = libVersionCode
+
+android {
+
+  compileSdkVersion 25
+  buildToolsVersion '26.0.2'
+
+  defaultConfig {
+    minSdkVersion 14
+    targetSdkVersion 25
+    versionCode 1
+    versionName libVersionCode
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+    }
+  }
+}
+
+dependencies {
+  compile files('libs/core-3.1.0.jar')
+}
+
+
+
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.4'
+}
+
+task sourcesJar(type: Jar) {
+  from android.sourceSets.main.java.srcDirs
+  classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+  source = android.sourceSets.main.java.srcDirs
+  classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from javadoc.destinationDir
+}
+artifacts {
+  archives javadocJar
+  archives sourcesJar
+}
+
+task findConventions << {
+  println project.getConvention()
+}
+
+

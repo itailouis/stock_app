@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * in talitha_koum.milipade.com.app.afdis.network
  */
 public class ApiClient {
-    public static final String BASE_URL = "http://192.168.100.4/afdisrest/v1/";
+    public static final String BASE_URL = "http://192.168.1.108/afdisrest/v1/";
     private static Retrofit retrofit = null;
    // private static Retrofit retrofit = null;
     private static Gson gson = new GsonBuilder()

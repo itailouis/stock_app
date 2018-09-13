@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class ShopAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public ViewHolder(View view) {
             super(view);
-            shopName = (TextView) itemView.findViewById(R.id.shop_name_s);
+            shopName = (TextView) itemView.findViewById(R.id.shopname);
             lastVisited = (TextView) itemView.findViewById(R.id.lastvisted);
         }
     }
@@ -60,13 +61,13 @@ public class ShopAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         // view type is to identify where to render the chat message
         // left or right
-        if (viewType == SELF) {
+       //if (viewType == SELF) {
             // self message
-            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.shop_active, parent, false);
-        } else {
+            //itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.shop_active, parent, false);
+       // } else {
             // others message
             itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.shop_active , parent, false);
-        }
+        //}
 
 
         return new ViewHolder(itemView);
@@ -87,14 +88,24 @@ public class ShopAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         Shop shop = shops.get(position);
-       //((ViewHolder) holder).productName.setText(shop.getShop_name());
+     ((ViewHolder) holder).shopName.setText(shop.getShop_name());
 
         //String timestamp = getTimeStamp(shop.getLastVisited());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;//You will get date object relative to server/client timezone wherever it is parsed
+        try {
+
+            date = dateFormat.parse(shop.getLast_visited());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //If you need time just put specific format for time like 'HH:mm:ss'
+        String dateStr = formatter.format(date);
 
         //if (shop.getUser().getName() != null)
             //timestamp = shop.getUser().getName() + ", " + timestamp;
 
-        //((ViewHolder) holder).productQuantity.setText(shop.getLast_visited());
+       ((ViewHolder) holder).lastVisited.setText(dateStr);
     }
 
     @Override

@@ -2,11 +2,17 @@ package talitha_koum.milipade.com.app.afdis.network;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import talitha_koum.milipade.com.app.afdis.models.Orders;
+import talitha_koum.milipade.com.app.afdis.responses.InventoryHistoryResponse;
+import talitha_koum.milipade.com.app.afdis.responses.LoginResponse;
+import talitha_koum.milipade.com.app.afdis.responses.OrderHistoryResponse;
 import talitha_koum.milipade.com.app.afdis.responses.OrderResponse;
+import talitha_koum.milipade.com.app.afdis.responses.ProductSizeResponse;
 import talitha_koum.milipade.com.app.afdis.responses.SaveResponse;
 import talitha_koum.milipade.com.app.afdis.responses.ShopResponse;
 import talitha_koum.milipade.com.app.afdis.responses.StockResponse;
@@ -36,5 +42,37 @@ public interface ApiInterface {
 
     @POST("api/stock")
     Call<SaveResponse> saveStock(@Body Orders order);
+
+    @FormUrlEncoded
+    @POST("api/stocktake")
+    Call<SaveResponse> saveStockTake(@Field("productname")String productname,
+                                     @Field("quantity")String quantity,
+                                     @Field("price")String price,
+                                     @Field("aName")String aName,
+                                     @Field("bName")String bName,
+                                     @Field("aPrice")String aPrice,
+                                     @Field("bPrice")String bPrice,
+                                     @Field("inline")String inline,
+                                     @Field("facingNumber")String facingNumber);
+
+    @GET("api/product")
+    Call<ProductSizeResponse> getProduct();
+
+    @FormUrlEncoded
+    @POST("api/stock")
+    Call<LoginResponse> login(@Field("username") String username, @Field("password")String password);
+
+    @FormUrlEncoded
+    @POST("api/stock")
+    Call<SaveResponse> getBarcode(@Field("barcode")String dlg);
+
+    @GET("api/stockhistory?")
+    Call<InventoryHistoryResponse> getStockHistory(@Query("shop_id")String shop_id);
+
+    @GET("api/orderhistory?")
+    Call<OrderHistoryResponse> getOrderHistory(@Query("shop_id")String shop_id);
+
+    //@GET("api/orderhistory/{cat}/{id}")
+    //Call<OrderHistoryResponse> getOrderHistory(@Path("shop_id")String shop_id);
 }
 
