@@ -52,6 +52,15 @@
                 android:value="talitha_koum.milipade.com.app.afdis.activities.MainActivity" />
         </activity>
         <activity
+            android:name=".activities.HistoryShopActivity"
+            android:label="@string/title_activity_shop"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="talitha_koum.milipade.com.app.afdis.activities.ShopActivity" />
+        </activity>
+        <activity
             android:name=".activities.AddStockActivity"
             android:label="@string/title_activity_add_stock"
             android:parentActivityName=".activities.ShopActivity"

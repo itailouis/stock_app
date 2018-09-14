@@ -14,10 +14,8 @@ import talitha_koum.milipade.com.app.afdis.R;
 import talitha_koum.milipade.com.app.afdis.adapters.ShopPagerAdapter;
 import talitha_koum.milipade.com.app.afdis.fragments.HistoryInventoryFragment;
 import talitha_koum.milipade.com.app.afdis.fragments.HistoryOrdersFragment;
-import talitha_koum.milipade.com.app.afdis.fragments.InventoryFragment;
-import talitha_koum.milipade.com.app.afdis.fragments.OrdersFragment;
 
-public class HistoryShopActivity extends AppCompatActivity implements  OrdersFragment.OnFragmentInteractionListener,InventoryFragment.OnFragmentInteractionListener {
+public class HistoryShopActivity extends AppCompatActivity implements  HistoryOrdersFragment.OnFragmentInteractionListener,HistoryInventoryFragment.OnFragmentInteractionListener {
     private TabLayout tabLayout;
 
     //This is our viewPager
