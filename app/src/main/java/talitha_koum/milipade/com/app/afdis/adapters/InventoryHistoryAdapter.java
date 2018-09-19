@@ -35,8 +35,8 @@ public class InventoryHistoryAdapter extends RecyclerView.Adapter<InventoryHisto
 
         public MyViewHolder(View view) {
             super(view);
-            name = view.findViewById(R.id.history_date);
-            //phone = view.findViewById(R.id.phone);
+            name = view.findViewById(R.id.firstLine);
+           phone = view.findViewById(R.id.history_date);
             //thumbnail = view.findViewById(R.id.thumbnail);
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +69,7 @@ public class InventoryHistoryAdapter extends RecyclerView.Adapter<InventoryHisto
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final InventoryHistory contact = contactListFiltered.get(position);
         holder.name.setText(contact.getDate_created());
-        //holder.phone.setText(contact.getPhone());
+        holder.phone.setText("");
 
 
     }

@@ -1,11 +1,14 @@
 package talitha_koum.milipade.com.app.afdis.network;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import talitha_koum.milipade.com.app.afdis.models.Orders;
 import talitha_koum.milipade.com.app.afdis.responses.InventoryHistoryResponse;
@@ -43,17 +46,18 @@ public interface ApiInterface {
     @POST("api/stock")
     Call<SaveResponse> saveStock(@Body Orders order);
 
-    @FormUrlEncoded
+    @Multipart
     @POST("api/stocktake")
-    Call<SaveResponse> saveStockTake(@Field("productname")String productname,
-                                     @Field("quantity")String quantity,
-                                     @Field("price")String price,
-                                     @Field("aName")String aName,
-                                     @Field("bName")String bName,
-                                     @Field("aPrice")String aPrice,
-                                     @Field("bPrice")String bPrice,
-                                     @Field("inline")String inline,
-                                     @Field("facingNumber")String facingNumber);
+    Call<SaveResponse> saveStockTake(@Field("productname") String productname,
+                                     @Field("quantity") String quantity,
+                                     @Field("price") String price,
+                                     @Field("aName") String aName,
+                                     @Field("bName") String bName,
+                                     @Field("aPrice") String aPrice,
+                                     @Field("bPrice") String bPrice,
+                                     @Field("inline") String inline,
+                                     @Field("facingNumber") String facingNumber,
+                                     @Part MultipartBody.Part image);
 
     @GET("api/product")
     Call<ProductSizeResponse> getProduct();

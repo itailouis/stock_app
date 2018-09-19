@@ -45,7 +45,7 @@ public class UserAuthActivity extends AppCompatActivity {
 
     }
 
-    // Replace Login Fragment with animation
+    //Replace Login Fragment with animation
     public void replaceLoginFragment() {
         fragmentManager
                 .beginTransaction()

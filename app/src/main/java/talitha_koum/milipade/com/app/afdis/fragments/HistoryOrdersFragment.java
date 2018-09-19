@@ -1,6 +1,7 @@
 package talitha_koum.milipade.com.app.afdis.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import talitha_koum.milipade.com.app.afdis.R;
+import talitha_koum.milipade.com.app.afdis.activities.HistoryInventoryActivity;
+import talitha_koum.milipade.com.app.afdis.activities.ShopActivity;
 import talitha_koum.milipade.com.app.afdis.adapters.OrdersAdapter;
 import talitha_koum.milipade.com.app.afdis.adapters.OrdersHistoryAdapter;
 import talitha_koum.milipade.com.app.afdis.dialogs.ConfirmOrderDialog;
@@ -119,18 +122,13 @@ public class HistoryOrdersFragment extends Fragment implements SwipeRefreshLayou
         recyclerView.addOnItemTouchListener(new OrdersAdapter.RecyclerTouchListener(getContext(), recyclerView, new OrdersAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                //Orders order =new Orders();
-                OrdersHistory order =orders.get(position);
-                //order.setShop_id(mParam1);
-                //order.setProduct_id(orders.get(position).getProduct_id());
-
-                /*ConfirmOrderDialog dialog = new ConfirmOrderDialog();
-                dialog.setTargetFragment(HistoryOrdersFragment.this, 0);
-                Bundle b = new Bundle();
-
-                b.putParcelable("order",order);
-                dialog.setArguments(b);
-                dialog.show(getActivity().getSupportFragmentManager(), "MyDialog");*/
+                OrdersHistory history = orders.get(position);
+                Intent intent = new Intent(getContext(), HistoryInventoryActivity.class);
+                intent.putExtra("shop_id", ShopActivity.shop_id);
+                intent.putExtra("shop_name", ShopActivity.shop_name);
+                intent.putExtra("date_created", history.getDate_created());
+                startActivity(intent);
+                getActivity().startActivity(intent);
 
             }
 
@@ -243,8 +241,8 @@ public class HistoryOrdersFragment extends Fragment implements SwipeRefreshLayou
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

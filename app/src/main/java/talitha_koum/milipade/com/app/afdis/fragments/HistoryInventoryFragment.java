@@ -21,7 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import talitha_koum.milipade.com.app.afdis.R;
-import talitha_koum.milipade.com.app.afdis.activities.AddStockActivity;
+import talitha_koum.milipade.com.app.afdis.activities.OrderHistoryActivity;
 import talitha_koum.milipade.com.app.afdis.activities.ShopActivity;
 import talitha_koum.milipade.com.app.afdis.adapters.InventoryHistoryAdapter;
 import talitha_koum.milipade.com.app.afdis.adapters.StocksAdapter;
@@ -129,13 +129,13 @@ public class HistoryInventoryFragment extends Fragment implements SwipeRefreshLa
         recyclerView.addOnItemTouchListener(new StocksAdapter.RecyclerTouchListener(getContext(), recyclerView, new StocksAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                //AddOrderDialog dialog = new AddOrderDialog();
-                //dialog.setTargetFragment(HistoryInventoryFragment.this, 0);
-                //Bundle b = new Bundle();
-               //// b.putParcelable("stock",stocks.get(position));
-                //dialog.setArguments(b);
-                //dialog.show(getActivity().getSupportFragmentManager(), "MyDialog");
-
+                InventoryHistory history = stocks.get(position);
+                Intent intent = new Intent(getContext(), OrderHistoryActivity.class);
+                intent.putExtra("shop_id", ShopActivity.shop_id);
+                intent.putExtra("shop_name", ShopActivity.shop_name);
+                intent.putExtra("date_created", history.getDate_created());
+                startActivity(intent);
+                getActivity().startActivity(intent);
 
             }
 
@@ -144,23 +144,6 @@ public class HistoryInventoryFragment extends Fragment implements SwipeRefreshLa
 
             }
         }));
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AddStockActivity.class);
-                intent.putExtra("shop_id", ShopActivity.shop_id);
-                intent.putExtra("shop_name", ShopActivity.shop_name);
-                startActivity(intent);
-                getActivity().startActivity(intent);
-
-               // AddOrderDialog dialog = new AddOrderDialog();
-                //Bundle b = new Bundle();
-                ///b.putParcelable("message", message);
-                // dialog.setArguments(b);
-                //dialog.show(getActivity().getFragmentManager(), "MyDialog");
-            }
-        });
-
         return mainview;
 
     }

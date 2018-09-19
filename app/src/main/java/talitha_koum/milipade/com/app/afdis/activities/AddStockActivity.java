@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,7 +61,8 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
     private String mImageUrl = "";
     public static String shop_id;
     public static String shop_name;
-    AppCompatAutoCompleteTextView productName;
+
+   AutoCompleteTextView productName;
     Spinner productMl;
     EditText productQuantity, productbreakeges, ProductPrice,competitorAName,competitorBName,competitorAPrice,competitorBprice,facingInline, facingProductNumber;
 
@@ -85,7 +90,7 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
 
             }
         });
-        productName = (AppCompatAutoCompleteTextView) findViewById(R.id.product_name);
+        productName = (AutoCompleteTextView) findViewById(R.id.product_name);
 
         productName.setAdapter(adapter);
         productName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -175,7 +180,12 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
                     progressDialog.show();
 
                     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                    Call<SaveResponse> call = apiService.saveStockTake(productname,quantity,price,aName,bName,aPrice,bPrice,inline,facingNumber);
+                    File file = new File(mImageUrl);
+                    RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+                    MultipartBody.Part image = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
+                    //RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
+
+                    Call<SaveResponse> call = apiService.saveStockTake(productname,quantity,price,aName,bName,aPrice,bPrice,inline,facingNumber,image);
                     call.enqueue(new Callback<SaveResponse>() {
                         @Override
                         public void onResponse(Call<SaveResponse> call, Response<SaveResponse> response) {
