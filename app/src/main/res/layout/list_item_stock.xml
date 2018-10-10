@@ -20,15 +20,16 @@
 
             android:textSize="20sp"
             android:textColor="#000"
-            android:id="@+id/assetIconu"
+            android:id="@+id/date_day"
             android:layout_width="64dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="12dp"
 
             />
 
+
         <TextView
-            android:id="@+id/assetIcon"
+            android:id="@+id/date_month"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -45,24 +46,41 @@
 
 
     <LinearLayout
-        android:layout_width="317dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
         android:layout_toRightOf="@id/date_container"
         android:orientation="vertical">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/product_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingBottom="2dp"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorPrimary"
+        android:text="Chateu"/>
+    <TextView
 
-        <TextView
-            android:id="@+id/product_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:paddingBottom="2dp"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/colorPrimary"
-            android:text="Chateu"/>
+        android:id="@+id/product_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:textSize="10dp"
+        android:textColor="@android:color/white"
+        android:layout_margin="3dp"
+        android:layout_alignParentRight="true"
+        android:text="5"
+        android:background="@drawable/bg_circle"/>
+
+</RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,6 +97,10 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textSize="14sp"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:textAllCaps="true"
             android:text="Quantity 400"
             />
         <TextView
@@ -88,8 +110,15 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textSize="14sp"
+            android:textColor="@color/colorRed"
+            android:gravity="center"
+            android:textAllCaps="true"
             android:text="Breakeges 8"
             />
+
+
+
     </LinearLayout>
 
     </LinearLayout>

@@ -21,9 +21,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import talitha_koum.milipade.com.app.afdis.R;
-import talitha_koum.milipade.com.app.afdis.activities.HistoryInventoryActivity;
+import talitha_koum.milipade.com.app.afdis.activities.OrderHistoryActivity;
 import talitha_koum.milipade.com.app.afdis.activities.ShopActivity;
-import talitha_koum.milipade.com.app.afdis.adapters.OrdersAdapter;
 import talitha_koum.milipade.com.app.afdis.adapters.OrdersHistoryAdapter;
 import talitha_koum.milipade.com.app.afdis.dialogs.ConfirmOrderDialog;
 import talitha_koum.milipade.com.app.afdis.models.OrdersHistory;
@@ -100,10 +99,10 @@ public class HistoryOrdersFragment extends Fragment implements SwipeRefreshLayou
         swipeRefreshLayout.setOnRefreshListener(this);
         orders = new ArrayList<>();
         //orders = ShopMock.getOrderList();
-        Toast.makeText(getContext(), "shop id " +mParam1, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getContext(), "shop id " +mParam1, Toast.LENGTH_LONG).show();
         // self user id is to identify the message owner
         //String selfUserId = App.getInstance().getPrefManager().getUser().getId();
-        String selfUserId = "modock_id";
+
         adapter = new OrdersHistoryAdapter(getContext(), orders, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -119,15 +118,20 @@ public class HistoryOrdersFragment extends Fragment implements SwipeRefreshLayou
                 }
         );
 
-        recyclerView.addOnItemTouchListener(new OrdersAdapter.RecyclerTouchListener(getContext(), recyclerView, new OrdersAdapter.ClickListener() {
+        recyclerView.addOnItemTouchListener(new OrdersHistoryAdapter.RecyclerTouchListener(getContext(), recyclerView, new OrdersHistoryAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 OrdersHistory history = orders.get(position);
-                Intent intent = new Intent(getContext(), HistoryInventoryActivity.class);
-                intent.putExtra("shop_id", ShopActivity.shop_id);
-                intent.putExtra("shop_name", ShopActivity.shop_name);
-                intent.putExtra("date_created", history.getDate_created());
-                startActivity(intent);
+                Intent intent = new Intent(getContext(),OrderHistoryActivity.class);
+
+                Bundle b = new Bundle();
+                b.putString("shop_id", ShopActivity.shop_id);
+                b.putString("shop_name", ShopActivity.shop_name);
+                b.putParcelableArrayList("orders", history.getOrders());
+              Toast.makeText(getContext(), "size: " + position, Toast.LENGTH_LONG).show();
+                intent.putExtras(b);
+                //intent.putParcelableArrayListExtra("date_created", history.getOrders());
+                //startActivity(intent);
                 getActivity().startActivity(intent);
 
             }
@@ -205,7 +209,7 @@ public class HistoryOrdersFragment extends Fragment implements SwipeRefreshLayou
 
             @Override
             public void onFailure(Call<OrderHistoryResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });

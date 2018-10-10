@@ -20,8 +20,11 @@ public class Stock implements Parcelable {
     private String date_created;
     private String product_name;
     private String product_identifier;
+    private String breakages;
+    private String instock_diff;
+    private String  product_buffer;
 
-    public Stock() {
+public Stock() {
     }
 
     protected Stock(Parcel in) {
@@ -35,25 +38,9 @@ public class Stock implements Parcelable {
         date_created = in.readString();
         product_name = in.readString();
         product_identifier = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(inventory_id);
-        dest.writeString(shop_id);
-        dest.writeString(user_id);
-        dest.writeString(product_id);
-        dest.writeString(product_size);
-        dest.writeString(product_category);
-        dest.writeString(product_quantity);
-        dest.writeString(date_created);
-        dest.writeString(product_name);
-        dest.writeString(product_identifier);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        breakages = in.readString();
+        instock_diff = in.readString();
+        product_buffer = in.readString();
     }
 
     public static final Creator<Stock> CREATOR = new Creator<Stock>() {
@@ -146,5 +133,51 @@ public class Stock implements Parcelable {
 
     public void setProduct_identifier(String product_identifier) {
         this.product_identifier = product_identifier;
+    }
+
+    public String getBreakages() {
+        return breakages;
+    }
+
+    public void setBreakages(String breakages) {
+        this.breakages = breakages;
+    }
+
+    public String getInstock_diff() {
+        return instock_diff;
+    }
+
+    public void setInstock_diff(String instock_diff) {
+        this.instock_diff = instock_diff;
+    }
+
+    public String getProduct_buffer() {
+        return product_buffer;
+    }
+
+    public void setProduct_buffer(String product_buffer) {
+        this.product_buffer = product_buffer;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(inventory_id);
+        parcel.writeString(shop_id);
+        parcel.writeString(user_id);
+        parcel.writeString(product_id);
+        parcel.writeString(product_size);
+        parcel.writeString(product_category);
+        parcel.writeString(product_quantity);
+        parcel.writeString(date_created);
+        parcel.writeString(product_name);
+        parcel.writeString(product_identifier);
+        parcel.writeString(breakages);
+        parcel.writeString(instock_diff);
+        parcel.writeString(product_buffer);
     }
 }

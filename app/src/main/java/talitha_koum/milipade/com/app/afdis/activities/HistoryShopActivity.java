@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import talitha_koum.milipade.com.app.afdis.App;
 import talitha_koum.milipade.com.app.afdis.R;
 import talitha_koum.milipade.com.app.afdis.adapters.ShopPagerAdapter;
 import talitha_koum.milipade.com.app.afdis.fragments.HistoryInventoryFragment;
@@ -33,15 +34,10 @@ public class HistoryShopActivity extends AppCompatActivity implements  HistoryOr
         setContentView(R.layout.activity_shop);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        shop_id =  App.getPrefManager(this).getShopId();
+        shop_name =  App.getPrefManager(this).getShopName();
         Intent intent = getIntent();
-        if (savedInstanceState == null) {
-            shop_id = intent.getStringExtra("shop_id");
-            shop_name = intent.getStringExtra("shop_name");
 
-        } else {
-            shop_id = savedInstanceState.getString("shop_id");
-            shop_name = savedInstanceState.getString("shop_name");
-        }
 
 
         getSupportActionBar().setTitle(shop_name);
@@ -80,7 +76,7 @@ public class HistoryShopActivity extends AppCompatActivity implements  HistoryOr
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_histoy_shop, menu);
         return true;
     }
 
@@ -107,27 +103,26 @@ public class HistoryShopActivity extends AppCompatActivity implements  HistoryOr
         inventoryFragment = HistoryInventoryFragment.newInstance(shop_id,"");
         ordersFragment=HistoryOrdersFragment.newInstance(shop_id,"");
 
-        adapter.addFragment(ordersFragment,"ORDERS");
-        adapter.addFragment(inventoryFragment,"INVENTORY");
+        adapter.addFragment(ordersFragment,"History\nOrders");
+        adapter.addFragment(inventoryFragment,"History\nInventory");
 
         viewPager.setAdapter(adapter);
     }
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
         // Save UI state changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is
         // killed and restarted.
-
         savedInstanceState.putString("shop_id", shop_id);
         savedInstanceState.putString("shop_name", shop_name);
+        super.onSaveInstanceState(savedInstanceState);
         // etc.
     }
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
         shop_id = savedInstanceState.getString("shop_id");
         shop_name = savedInstanceState.getString("shop_name");
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override

@@ -12,7 +12,7 @@ public class Orders implements Parcelable{
 
     private String order_id;
     private String product_id;
-    private String quantity_order;
+    private String quantity_ordered;
     private String delivery_date;
     private String delivered_quantity;
     private String proposed_delivery_date;
@@ -30,7 +30,7 @@ public class Orders implements Parcelable{
     protected Orders(Parcel in) {
         order_id = in.readString();
         product_id = in.readString();
-        quantity_order = in.readString();
+        quantity_ordered = in.readString();
         delivery_date = in.readString();
         delivered_quantity = in.readString();
         proposed_delivery_date = in.readString();
@@ -71,12 +71,12 @@ public class Orders implements Parcelable{
         this.product_id = product_id;
     }
 
-    public String getQuantity_order() {
-        return quantity_order;
+    public String getQuantity_ordered() {
+        return quantity_ordered;
     }
 
-    public void setQuantity_order(String quantity_order) {
-        this.quantity_order = quantity_order;
+    public void setQuantity_ordered(String quantity_ordered) {
+        this.quantity_ordered = quantity_ordered;
     }
 
     public String getDelivery_date() {
@@ -168,7 +168,7 @@ public class Orders implements Parcelable{
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(order_id);
         parcel.writeString(product_id);
-        parcel.writeString(quantity_order);
+        parcel.writeString(quantity_ordered);
         parcel.writeString(delivery_date);
         parcel.writeString(delivered_quantity);
         parcel.writeString(proposed_delivery_date);

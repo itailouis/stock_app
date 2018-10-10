@@ -10,8 +10,10 @@ import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 
+import talitha_koum.milipade.com.app.afdis.App;
 import talitha_koum.milipade.com.app.afdis.R;
-import talitha_koum.milipade.com.app.afdis.adapters.ShopAdapter;
+import talitha_koum.milipade.com.app.afdis.adapters.OrdersAdapter;
+import talitha_koum.milipade.com.app.afdis.models.Orders;
 import talitha_koum.milipade.com.app.afdis.models.Shop;
 import talitha_koum.milipade.com.app.afdis.utils.SimpleDividerItemDecoration;
 
@@ -20,8 +22,9 @@ public class OrderHistoryActivity extends AppCompatActivity {
     public static String shop_name;
     public static String date_ordered;
     private RecyclerView recyclerView;
-    private ShopAdapter adapter;
+    private OrdersAdapter adapter;
     private ArrayList<Shop> shops;
+    ArrayList<Orders> orders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,25 +33,18 @@ public class OrderHistoryActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
-        if ((savedInstanceState != null)&&(savedInstanceState.getString("shop_id")!=null)&&(savedInstanceState.getString("shop_name")!=null)) {
-            shop_id = savedInstanceState.getString("shop_id");
-            shop_name = savedInstanceState.getString("shop_name");
-            date_ordered = savedInstanceState.getString("date_created");
+        Bundle b = this.getIntent().getExtras();
+        shop_id =  App.getPrefManager(this).getShopId();
+        shop_name =  App.getPrefManager(this).getShopName();
 
-        } else {
-            shop_id = intent.getStringExtra("shop_id");
-            shop_name = intent.getStringExtra("shop_name");
-            date_ordered = intent.getStringExtra("date_created");
-        }
+
+        orders = b.getParcelableArrayList("orders");
         getSupportActionBar().setTitle(shop_name);
         recyclerView = (RecyclerView) findViewById(R.id.list_shops);
 
-        shops = new ArrayList<>();
-
-        adapter = new ShopAdapter(this, shops,"");
+        adapter = new OrdersAdapter(this, orders);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(

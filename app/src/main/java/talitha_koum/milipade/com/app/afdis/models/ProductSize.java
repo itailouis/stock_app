@@ -8,18 +8,19 @@ package talitha_koum.milipade.com.app.afdis.models;
 public class ProductSize {
 
     private  int id;
-    private String ml50;
-    private String m125;
-    private String m175;
-    private String ml200;
-    private String ml200_pet;
-    private String ml275;
-    private String ml330;
-    private String ml340;
-    private String ml346;
-    private String ml375;
-    private String ml750;
-    private String ml750_pet;
+    private String size_50;
+    private String size_125;
+    private String size_150;
+    private String size_175;
+    private String size_200;
+    private String size_200_pet;
+    private String size_275;
+    private String size_330;
+    private String size_340;
+    private String size_346;
+    private String size_375;
+    private String size_750;
+    private String size_750_pet;
 
     public int getId() {
         return id;
@@ -29,99 +30,107 @@ public class ProductSize {
         this.id = id;
     }
 
-    public String getMl50() {
-        return ml50;
+    public String getSize_50() {
+        return size_50;
     }
 
-    public void setMl50(String ml50) {
-        this.ml50 = ml50;
+    public void setSize_50(String size_50) {
+        this.size_50 = size_50;
     }
 
-    public String getM125() {
-        return m125;
+    public String getSize_125() {
+        return size_125;
     }
 
-    public void setM125(String m125) {
-        this.m125 = m125;
+    public void setSize_125(String size_125) {
+        this.size_125 = size_125;
     }
 
-    public String getM175() {
-        return m175;
+    public String getSize_150() {
+        return size_150;
     }
 
-    public void setM175(String m175) {
-        this.m175 = m175;
+    public void setSize_150(String size_150) {
+        this.size_150 = size_150;
     }
 
-    public String getMl200() {
-        return ml200;
+    public String getSize_175() {
+        return size_175;
     }
 
-    public void setMl200(String ml200) {
-        this.ml200 = ml200;
+    public void setSize_175(String size_175) {
+        this.size_175 = size_175;
     }
 
-    public String getMl275() {
-        return ml275;
+    public String getSize_200() {
+        return size_200;
     }
 
-    public void setMl275(String ml275) {
-        this.ml275 = ml275;
+    public void setSize_200(String size_200) {
+        this.size_200 = size_200;
     }
 
-    public String getMl330() {
-        return ml330;
+    public String getSize_200_pet() {
+        return size_200_pet;
     }
 
-    public void setMl330(String ml330) {
-        this.ml330 = ml330;
+    public void setSize_200_pet(String size_200_pet) {
+        this.size_200_pet = size_200_pet;
     }
 
-    public String getMl340() {
-        return ml340;
+    public String getSize_275() {
+        return size_275;
     }
 
-    public void setMl340(String ml340) {
-        this.ml340 = ml340;
+    public void setSize_275(String size_275) {
+        this.size_275 = size_275;
     }
 
-    public String getMl346() {
-        return ml346;
+    public String getSize_330() {
+        return size_330;
     }
 
-    public void setMl346(String ml346) {
-        this.ml346 = ml346;
+    public void setSize_330(String size_330) {
+        this.size_330 = size_330;
     }
 
-    public String getMl375() {
-        return ml375;
+    public String getSize_340() {
+        return size_340;
     }
 
-    public void setMl375(String ml375) {
-        this.ml375 = ml375;
+    public void setSize_340(String size_340) {
+        this.size_340 = size_340;
     }
 
-    public String getMl750() {
-        return ml750;
+    public String getSize_346() {
+        return size_346;
     }
 
-    public void setMl750(String ml750) {
-        this.ml750 = ml750;
+    public void setSize_346(String size_346) {
+        this.size_346 = size_346;
     }
 
-    public String getMl200_pet() {
-        return ml200_pet;
+    public String getSize_375() {
+        return size_375;
     }
 
-    public void setMl200_pet(String ml200_pet) {
-        this.ml200_pet = ml200_pet;
+    public void setSize_375(String size_375) {
+        this.size_375 = size_375;
     }
 
-    public String getMl750_pet() {
-        return ml750_pet;
+    public String getSize_750() {
+        return size_750;
     }
 
-    public void setMl750_pet(String ml750_pet) {
-        this.ml750_pet = ml750_pet;
+    public void setSize_750(String size_750) {
+        this.size_750 = size_750;
+    }
+
+    public String getSize_750_pet() {
+        return size_750_pet;
+    }
+
+    public void setSize_750_pet(String size_750_pet) {
+        this.size_750_pet = size_750_pet;
     }
 }

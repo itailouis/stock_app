@@ -1,6 +1,7 @@
 package talitha_koum.milipade.com.app.afdis;
 
 import android.app.Application;
+import android.content.Context;
 
 import talitha_koum.milipade.com.app.afdis.utils.MyPreferenceManager;
 
@@ -11,7 +12,7 @@ import talitha_koum.milipade.com.app.afdis.utils.MyPreferenceManager;
  */
 public class App extends Application {
     private static App instance;
-    private MyPreferenceManager pref;
+    private static MyPreferenceManager pref;
 
     @Override
     public void onCreate() {
@@ -22,9 +23,9 @@ public class App extends Application {
     public static synchronized App getInstance() {
         return instance;
     }
-    public MyPreferenceManager getPrefManager() {
+    public static MyPreferenceManager getPrefManager(Context context) {
         if (pref == null) {
-            pref = new MyPreferenceManager(this);
+            pref = new MyPreferenceManager(context);
         }
 
         return pref;

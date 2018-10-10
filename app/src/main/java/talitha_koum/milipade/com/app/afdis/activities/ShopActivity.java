@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import talitha_koum.milipade.com.app.afdis.App;
 import talitha_koum.milipade.com.app.afdis.R;
 import talitha_koum.milipade.com.app.afdis.adapters.ShopPagerAdapter;
 import talitha_koum.milipade.com.app.afdis.fragments.InventoryFragment;
@@ -34,21 +35,11 @@ public class ShopActivity extends AppCompatActivity implements  OrdersFragment.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
-        if ((savedInstanceState != null)&&(savedInstanceState.getString("shop_id")!=null)&&(savedInstanceState.getString("shop_name")!=null)) {
-            shop_id = savedInstanceState.getString("shop_id");
-            shop_name = savedInstanceState.getString("shop_name");
-
-        } else {
-            shop_id = intent.getStringExtra("shop_id");
-            shop_name = intent.getStringExtra("shop_name");
-        }
-
-
+        shop_id =  App.getPrefManager(this).getShopId();
+        shop_name =  App.getPrefManager(this).getShopName();
         getSupportActionBar().setTitle(shop_name);
-
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         //viewPager.setOffscreenPageLimit(2);
-
         //Initializing the tablayout
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);

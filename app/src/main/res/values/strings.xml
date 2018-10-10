@@ -63,5 +63,9 @@
     <string name="action_history">History</string>
     <string name="title_activity_order_history">OrderHistoryActivity</string>
     <string name="title_activity_history_inventory">HistoryInventoryActivity</string>
+    <string name="title_activity_plan">PlanActivity</string>
+    <string name="action_delete">Plan</string>
+    <string name="action_logout">Logout</string>
+    <string name="menu_search">Search</string>
 
 </resources>

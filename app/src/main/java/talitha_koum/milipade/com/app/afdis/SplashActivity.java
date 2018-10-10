@@ -75,7 +75,8 @@ public class SplashActivity extends FragmentActivity {
         animation = AnimationUtils.loadAnimation(this, R.anim.logo_animation);
         logo.startAnimation(animation);
 
-        animation = AnimationUtils.loadAnimation(this, R.anim.app_name_animation);
+        animation = AnimationUtils.loadAnimation(this,
+                R.anim.app_name_animation);
         appTitle.startAnimation(animation);
 
         animation = AnimationUtils.loadAnimation(this, R.anim.pro_animation);
@@ -83,13 +84,16 @@ public class SplashActivity extends FragmentActivity {
     }
 
     private void endSplash() {
-        animation = AnimationUtils.loadAnimation(this, R.anim.logo_animation_back);
+        animation = AnimationUtils.loadAnimation(this,
+                R.anim.logo_animation_back);
         logo.startAnimation(animation);
 
-        animation = AnimationUtils.loadAnimation(this, R.anim.app_name_animation_back);
+        animation = AnimationUtils.loadAnimation(this,
+                R.anim.app_name_animation_back);
         appTitle.startAnimation(animation);
 
-        animation = AnimationUtils.loadAnimation(this, R.anim.pro_animation_back);
+        animation = AnimationUtils.loadAnimation(this,
+                R.anim.pro_animation_back);
         appSlogan.startAnimation(animation);
 
         animation.setAnimationListener(new AnimationListener() {
@@ -131,7 +135,7 @@ public class SplashActivity extends FragmentActivity {
     public void changeCity(String city){
         Log.i("city",city);
         //MySharedPreferences.setCity(this,city);
-       // MySharedPreferences.setFirstTimeLaunch(this,true);
+        //MySharedPreferences.setFirstTimeLaunch(this,true);
         new Handler().postDelayed(new Runnable() {
 
             @Override

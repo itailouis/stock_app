@@ -3,8 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="talitha_koum.milipade.com.app.afdis.activities.MainActivity">
     <item
+        android:id="@+id/action_plan"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        android:icon="@drawable/actionbar_calendar"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="100"
+        android:title="@string/action_logout"
         app:showAsAction="never" />
 </menu>

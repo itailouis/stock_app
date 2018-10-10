@@ -1,6 +1,7 @@
 package talitha_koum.milipade.com.app.afdis.dialogs;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,11 +10,14 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -37,6 +41,12 @@ public class AddOrderDialog extends DialogFragment {
     String Month;
     Stock stock;
     private AddOrderDialogInteractionListener mListener;
+    SimpleDateFormat sdf;
+    Date date ;
+    int year;
+    int month;
+    int dayOfMonth;
+    Calendar calendar;
     public AddOrderDialog() {
 
     }
@@ -66,12 +76,46 @@ public class AddOrderDialog extends DialogFragment {
         SimpleDateFormat month_date = new SimpleDateFormat("MMMMMMMMM");
         Month = month_date.format(c.getTime());
         Year = c.get(Calendar.YEAR);
+        sdf = new SimpleDateFormat("yyyy-MM-dd");//0000-00-00
+        date = new Date();
         final EditText orderingQuantity= (EditText) v.findViewById(R.id.quantity);
         final EditText expectedDelivaryDate= (EditText) v.findViewById(R.id.delivery_date);
+
+
+        final TextView productName= (TextView) v.findViewById(R.id.productName);
+        final TextView quantityOrdered= (TextView) v.findViewById(R.id.price_text);
+        //final TextView totalprice= (TextView) v.findViewById(R.id.totalPrice);
+        quantityOrdered.setText("Product Size:"+stock.getProduct_size());
+        productName.setText(stock.getProduct_name());
         expectedDelivaryDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //new DatePickerFragment().show(getFragmentManager(), "MyProgressDialog");
+                calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                expectedDelivaryDate.setText(( year + "-" + (month + 1) + "-" +day));
+                            }
+                        }, year, month, dayOfMonth);
+                //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+                datePickerDialog.setTitle("Select Expected Delivery Date:");
+                Date maxDate = new Date();
+                maxDate.setTime(new Date().getTime()+(86400000*7));
+                //datePickerDialog.getDatePicker().setMaxDate(maxDate.getTime());
+                long minTimeMillis = System.currentTimeMillis() + 7 * 3600000;
+                final Calendar minDate = Calendar.getInstance();
+                minDate.setTimeInMillis(minTimeMillis);
+                minDate.set(Calendar.HOUR_OF_DAY, minDate.getMinimum(Calendar.HOUR_OF_DAY));
+                minDate.set(Calendar.MINUTE, minDate.getMinimum(Calendar.MINUTE));
+                minDate.set(Calendar.SECOND, minDate.getMinimum(Calendar.SECOND));
+                minDate.set(Calendar.MILLISECOND, minDate.getMinimum(Calendar.MILLISECOND));
+                datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+                datePickerDialog.show();
+
             }
         });
         final EditText productId= (EditText) v.findViewById(R.id.quantity);
@@ -95,10 +139,10 @@ public class AddOrderDialog extends DialogFragment {
                 }else{
                     progressDialog.show();
                     order.setProduct_id(stock.getProduct_id());
-                    order.setQuantity_order(quantity);
+                    order.setQuantity_ordered(quantity);
                     order.setProposed_delivery_date(date);
                     order.setShop_id(stock.getShop_id());
-                    order.setDate_created("2018-09-15 09:42:47");
+                    order.setDate_created(date);
                     order.setOrder_status("1");
 
 
@@ -144,6 +188,7 @@ public class AddOrderDialog extends DialogFragment {
             }
         });
         builder.setView(v);
+        builder.setTitle("Add New Order");
         return builder.create();
     }
     @Override

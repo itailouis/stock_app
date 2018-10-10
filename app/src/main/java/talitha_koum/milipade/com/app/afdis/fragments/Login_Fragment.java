@@ -2,6 +2,7 @@ package talitha_koum.milipade.com.app.afdis.fragments;
 
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
@@ -23,7 +24,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +31,12 @@ import java.util.regex.Pattern;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import talitha_koum.milipade.com.app.afdis.App;
 import talitha_koum.milipade.com.app.afdis.R;
+import talitha_koum.milipade.com.app.afdis.activities.MainActivity;
+import talitha_koum.milipade.com.app.afdis.data.AfdisController;
+import talitha_koum.milipade.com.app.afdis.models.Location;
+import talitha_koum.milipade.com.app.afdis.models.Shop;
 import talitha_koum.milipade.com.app.afdis.network.ApiClient;
 import talitha_koum.milipade.com.app.afdis.network.ApiInterface;
 import talitha_koum.milipade.com.app.afdis.responses.LoginResponse;
@@ -53,6 +58,7 @@ public class Login_Fragment extends Fragment implements OnClickListener {
 	private static FragmentManager fragmentManager;
 	private String accountType;
 	private AccountManager accountManager;
+    private AfdisController DBcontroller;
 	// Creating progress dialog.
 	ProgressDialog progressDialog;
 
@@ -72,7 +78,7 @@ public class Login_Fragment extends Fragment implements OnClickListener {
 		progressDialog =  new ProgressDialog(getActivity());
 
 
-
+        DBcontroller = new AfdisController(getActivity());
 
 		initViews();
 		setListeners();
@@ -208,22 +214,48 @@ public class Login_Fragment extends Fragment implements OnClickListener {
 		progressDialog.show();
 
         //MySharedPreferences.setLogin(getActivity().getBaseContext(),true);
-        progressDialog.dismiss();
-        getActivity().finish();
+        //progressDialog.dismiss();
+        //getActivity().finish();
 
 		Call<LoginResponse> call = apiService.login(username,  password);
 		call.enqueue(new Callback<LoginResponse>() {
 			@Override
 			public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-				Toast.makeText(getActivity().getBaseContext(), "response", Toast.LENGTH_LONG).show();
-
+				//Toast.makeText(getActivity().getBaseContext(), "response", Toast.LENGTH_LONG).show();
 				progressDialog.dismiss();
-				getActivity().finish();
+				LoginResponse loginResponse = response.body();
+				if(loginResponse.getStatus_code()!=201) {
+					new CustomToast().Show_Toast(getActivity(), view, "something went wront");
+
+				}
+				if(loginResponse.getData().getStatus()){
+                    App.getPrefManager(getContext()).storeUser(loginResponse.getData().getUser());
+                    DBcontroller.open();
+                    //if(loginResponse.getData().getUser().getLocation()!=null) {
+                        for (Location location : loginResponse.getData().getUser().getLocation()) {
+                            //if (location.getShops().size() < 0) {
+                                for (Shop shop : location.getShops()) {
+                                    DBcontroller.insertData(shop, location.getLocation_name());
+                                }
+                           // }
+                        }
+                        DBcontroller.close();
+                        App.getPrefManager(getContext()).setLogin(true);
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        getActivity().finish();
+                    }else{
+                        new CustomToast().Show_Toast(getActivity(), view, "error 2: something went wront");
+                    }
+				//}else{
+				   // new CustomToast().Show_Toast(getActivity(), view,loginResponse.getData().getMessage() );
+				//}
+
 			}
 
 			@Override
 			public void onFailure(Call<LoginResponse> call, Throwable t) {
 				//Toast.makeText(getActivity().getBaseContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                new CustomToast().Show_Toast(getActivity(), view,"Network Error Please try again" );
 				progressDialog.dismiss();
 
 			}

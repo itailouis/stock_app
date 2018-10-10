@@ -21,10 +21,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import talitha_koum.milipade.com.app.afdis.R;
-import talitha_koum.milipade.com.app.afdis.activities.OrderHistoryActivity;
+import talitha_koum.milipade.com.app.afdis.activities.HistoryInventoryActivity;
 import talitha_koum.milipade.com.app.afdis.activities.ShopActivity;
 import talitha_koum.milipade.com.app.afdis.adapters.InventoryHistoryAdapter;
-import talitha_koum.milipade.com.app.afdis.adapters.StocksAdapter;
 import talitha_koum.milipade.com.app.afdis.dialogs.AddOrderDialog;
 import talitha_koum.milipade.com.app.afdis.models.InventoryHistory;
 import talitha_koum.milipade.com.app.afdis.network.ApiClient;
@@ -102,7 +101,7 @@ public class HistoryInventoryFragment extends Fragment implements SwipeRefreshLa
         // Inflate the layout for this fragment
         mainview =inflater.inflate(R.layout.fragment_inventory, container, false);
         fab = (FloatingActionButton) mainview.findViewById(R.id.fab);
-
+        fab.setVisibility(View.GONE);
         recyclerView = (RecyclerView) mainview.findViewById(R.id.list_stocks);
         swipeRefreshLayout = (SwipeRefreshLayout) mainview.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -126,16 +125,26 @@ public class HistoryInventoryFragment extends Fragment implements SwipeRefreshLa
                 }
         );
 
-        recyclerView.addOnItemTouchListener(new StocksAdapter.RecyclerTouchListener(getContext(), recyclerView, new StocksAdapter.ClickListener() {
+        recyclerView.addOnItemTouchListener(new InventoryHistoryAdapter.RecyclerTouchListener(getContext(), recyclerView, new InventoryHistoryAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 InventoryHistory history = stocks.get(position);
-                Intent intent = new Intent(getContext(), OrderHistoryActivity.class);
-                intent.putExtra("shop_id", ShopActivity.shop_id);
-                intent.putExtra("shop_name", ShopActivity.shop_name);
-                intent.putExtra("date_created", history.getDate_created());
-                startActivity(intent);
+                //Bundle b = new Bundle();
+                //b.putParcelableArrayList(history.getStocks());
+                Intent intent = new Intent(getContext(),HistoryInventoryActivity.class);
+                //intent.putExtra("shop_id", ShopActivity.shop_id);
+                //intent.putExtra("shop_name", ShopActivity.shop_name);
+                //intent.putExtra("stocks", history.getStocks());
+                Toast.makeText(getContext(), "size: " + history.getStocks().size(), Toast.LENGTH_LONG).show();
+                Bundle b = new Bundle();
+                b.putString("shop_id", ShopActivity.shop_id);
+                b.putString("shop_name", ShopActivity.shop_name);
+                b.putParcelableArrayList("stocks", history.getStocks());
+
+                intent.putExtras(b);
+                //startActivity(intent);
                 getActivity().startActivity(intent);
+                ///8T maga 8
 
             }
 
@@ -162,8 +171,7 @@ public class HistoryInventoryFragment extends Fragment implements SwipeRefreshLa
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 

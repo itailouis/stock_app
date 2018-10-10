@@ -1,6 +1,7 @@
 package talitha_koum.milipade.com.app.afdis.dialogs;
 
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,9 +11,11 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -31,6 +34,10 @@ public class ConfirmOrderDialog extends DialogFragment {
     private static final String TAG = ConfirmOrderDialog.class.getSimpleName();
     ProgressDialog progressDialog;
     Orders order;
+    int year;
+    int month;
+    int dayOfMonth;
+    Calendar calendar;
     private ConfirmOrderDialogInteractionListener mListener;
     public ConfirmOrderDialog() {
 
@@ -61,12 +68,40 @@ public class ConfirmOrderDialog extends DialogFragment {
         final TextView quantityOrdered= (TextView) v.findViewById(R.id.price_text);
         final TextView totalprice= (TextView) v.findViewById(R.id.totalPrice);
 
-        productName.setText(order.getProduct_name());
-        quantityOrdered.setText(order.getQuantity_order());
+        productName.setText(order.getProduct_name()+" "+order.getProduct_size()+" ML");
+        quantityOrdered.setText("Quantity :"+order.getQuantity_ordered());
         totalprice.setText(order.getProposed_delivery_date());
 
         final EditText orderingQuantity= (EditText) v.findViewById(R.id.edit_quantity);
         final EditText expectedDelivaryDate= (EditText) v.findViewById(R.id.delivared_date);
+        expectedDelivaryDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                expectedDelivaryDate.setText(( year + "-" + (month + 1) + "-" +day));
+                            }
+                        }, year, month, dayOfMonth);
+                //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+                datePickerDialog.setTitle("Select Delivered Date:");
+                long minTimeMillis = System.currentTimeMillis() + 7 * 3600000;
+                final Calendar minDate = Calendar.getInstance();
+                minDate.setTimeInMillis(minTimeMillis);
+                minDate.set(Calendar.HOUR_OF_DAY, minDate.getMinimum(Calendar.HOUR_OF_DAY));
+                minDate.set(Calendar.MINUTE, minDate.getMinimum(Calendar.MINUTE));
+                minDate.set(Calendar.SECOND, minDate.getMinimum(Calendar.SECOND));
+                minDate.set(Calendar.MILLISECOND, minDate.getMinimum(Calendar.MILLISECOND));
+                datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+                datePickerDialog.show();
+
+            }
+        });
 
 
 
@@ -134,7 +169,7 @@ public class ConfirmOrderDialog extends DialogFragment {
             }
         });
         builder.setView(v);
-
+        builder.setTitle("Confirm Order");
         return builder.create();
     }
     @Override

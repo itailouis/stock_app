@@ -8,182 +8,248 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.AddStockActivity"
     tools:showIn="@layout/activity_add_stock">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffff"
         android:orientation="vertical"
         android:padding="@dimen/fab_margin">
+        <RelativeLayout
+            android:layout_marginTop="@dimen/fab_margin"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="?android:attr/listPreferredItemHeight"
+            android:padding="1dip" >
+            <ImageButton
+
+                android:id="@+id/scan_btn"
+                android:background="@color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:padding="8dp"
+                android:layout_marginRight="6dip"
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_fab_qr"/>
+
+            <!--<android.support.design.widget.TextInputLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_above="@id/history_date"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/scan_btn"
+                > </android.support.design.widget.TextInputLayout>-->
+
+                <android.support.v7.widget.AppCompatAutoCompleteTextView
+                    android:layout_width="fill_parent"
+                    android:padding="5dp"
+                    android:layout_height="60dp"
+                    android:layout_above="@id/history_date"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@id/scan_btn"
+
+                    android:id="@+id/product_name"
+
+
+                    android:hint="Product Name"
+                    android:inputType="text"
+
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:gravity="center_vertical"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_marginTop="1dp"
+                android:id="@+id/history_date"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@id/scan_btn"
+                android:orientation="horizontal"
+                android:weightSum="2">
+                <TextView
+                    android:layout_weight="1.3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Product Size"
+                    android:textSize="12sp" />
+                <Spinner
+                    android:layout_weight="0.7"
+                    android:id="@+id/product_size"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:hint="750 ml"
+                    />
+
+            </LinearLayout>
+        </RelativeLayout>
         <LinearLayout
-            android:weightSum="3"
+            android:layout_marginTop="@dimen/fab_margin"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-            <ImageButton
-                android:background="@android:color/transparent"
-                android:layout_weight="0.2"
-                android:id="@+id/scan_btn"
-                android:padding="@dimen/fab_margin"
-                android:src="@drawable/ic_fab_qr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            android:weightSum="2">
             <android.support.design.widget.TextInputLayout
-
-                android:layout_weight="2.5"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <AutoCompleteTextView
-                    android:hint="Chateu"
-                    android:id="@+id/product_name"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/quantity"
+                    android:inputType="number"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:hint="Quantity"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHint="@color/message"
+                    android:textSize="16sp" />
             </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_weight="1"
 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
 
-
-            <Spinner
-                android:layout_weight="0.3"
-                android:hint="750 ml"
-                android:inputType="number"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/product_size"
-                android:layout_width="65dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true" />
+                    android:id="@+id/breackege"
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:hint="Breakages"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHint="@color/message"
+                    android:textSize="16sp" />
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
 
+                android:id="@+id/product_price"
+                android:inputType="numberDecimal"
+                android:digits="0123456789."
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:hint="Price"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/message"
+                android:textSize="16sp" />
+        </android.support.design.widget.TextInputLayout>
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="2">
-
-            <EditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_weight="1"
-                android:id="@+id/quantity"
-                android:inputType="number"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="6dp"
-                android:gravity="center"
-                android:hint="Quantity"
-                android:singleLine="true"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorHint="@color/message"
-                android:textSize="16sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <EditText
 
-            <EditText
+                    android:id="@+id/product_name_a"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:hint="Competitor A"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHint="@color/message"
+                    android:textSize="16sp" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
                 android:layout_weight="1"
-                android:id="@+id/breackege"
-                android:inputType="number"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <EditText
 
-                android:layout_height="40dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="6dp"
-                android:gravity="center"
-                android:hint="Breakages"
-                android:singleLine="true"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorHint="@color/message"
-                android:textSize="16sp" />
-
+                    android:id="@+id/product_price_a"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789."
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:hint="Price"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHint="@color/message"
+                    android:textSize="16sp" />
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+            <android.support.design.widget.TextInputLayout
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <EditText
 
-        <EditText
+                    android:id="@+id/product_name_b"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:hint="Competitor B "
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHint="@color/message"
+                    android:textSize="16sp" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <EditText
 
-            android:id="@+id/product_price"
-            android:inputType="number"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="6dp"
-            android:gravity="center"
-            android:hint="Price"
-            android:singleLine="true"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/message"
-            android:textSize="16sp" />
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="2">
-
-        <EditText
-            android:layout_weight="1"
-            android:id="@+id/product_name_a"
-            android:inputType="text"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="6dp"
-            android:gravity="center"
-            android:hint="Competitor A"
-            android:singleLine="true"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/message"
-            android:textSize="16sp" />
-        <EditText
-            android:layout_weight="1"
-            android:id="@+id/product_price_a"
-            android:inputType="number"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="6dp"
-            android:gravity="center"
-            android:hint="Price"
-            android:singleLine="true"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/message"
-            android:textSize="16sp" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="2">
-        <EditText
-            android:layout_weight="1"
-            android:id="@+id/product_name_b"
-            android:inputType="text"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="6dp"
-            android:gravity="center"
-            android:hint="Competitor B "
-            android:singleLine="true"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/message"
-            android:textSize="16sp" />
-        <EditText
-            android:layout_weight="1"
-        android:id="@+id/product_price_b"
-        android:inputType="number"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="6dp"
-        android:gravity="center"
-        android:hint="Price"
-        android:singleLine="true"
-        android:textColor="@color/colorPrimaryDark"
-        android:textColorHint="@color/message"
-        android:textSize="16sp" />
-    </LinearLayout>
+                    android:id="@+id/product_price_b"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789."
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:hint="Price"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHint="@color/message"
+                    android:textSize="16sp" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/facing_image"
@@ -201,40 +267,47 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="2">
-
-            <EditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_weight="1"
-                android:id="@+id/facing_quantity"
-                android:inputType="number"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="6dp"
-                android:gravity="center"
-                android:hint="No# Facing"
-                android:singleLine="true"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorHint="@color/message"
-                android:textSize="16sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <EditText
 
-            <EditText
+                    android:id="@+id/facing_quantity"
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:hint="No# Facing"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHint="@color/message"
+                    android:textSize="16sp" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
                 android:layout_weight="1"
-                android:id="@+id/facing_inline"
-                android:inputType="number"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="6dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <EditText
 
-                android:gravity="center"
-                android:hint=" No# In Line"
-                android:singleLine="true"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorHint="@color/message"
-                android:textSize="16sp" />
+                    android:id="@+id/facing_inline"
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="6dp"
 
+                    android:gravity="center"
+                    android:hint=" No# In Line"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHint="@color/message"
+                    android:textSize="16sp" />
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -259,8 +332,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
         </LinearLayout>
-
-
     </LinearLayout>
-
+    //cemnuel
 </android.support.v4.widget.NestedScrollView>

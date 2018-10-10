@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -89,23 +88,8 @@ public class ShopAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         Shop shop = shops.get(position);
      ((ViewHolder) holder).shopName.setText(shop.getShop_name());
-
-        //String timestamp = getTimeStamp(shop.getLastVisited());
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = null;//You will get date object relative to server/client timezone wherever it is parsed
-        try {
-
-            date = dateFormat.parse(shop.getLast_visited());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //If you need time just put specific format for time like 'HH:mm:ss'
-        String dateStr = formatter.format(date);
-
-        //if (shop.getUser().getName() != null)
-            //timestamp = shop.getUser().getName() + ", " + timestamp;
-
-       ((ViewHolder) holder).lastVisited.setText(dateStr);
+     //((ViewHolder) holder).lastVisited.setText(shop.getLast_visited());
+     ((ViewHolder) holder).lastVisited.setText(getTimeStamp(shop.getLast_visited()));
     }
 
     @Override
@@ -130,12 +114,11 @@ public class ShopAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             e.printStackTrace();
         }
 
-        //return timestamp;
-        return dateStr;
+        return timestamp;
+
     }
     public interface ClickListener {
         void onClick(View view, int position);
-
         void onLongClick(View view, int position);
     }
     public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {

@@ -39,12 +39,12 @@ public class ShopMock {
 
        Orders order = new Orders();
         order.setProduct_id("Chateu");
-        order.setQuantity_order("400");
+        order.setQuantity_ordered("400");
        orderList.add(order);
 
         Orders order1 = new Orders();
         order1.setProduct_id("TwoKeys");
-        order1.setQuantity_order("400");
+        order1.setQuantity_ordered("400");
         orderList.add(order1);
 
         return orderList;

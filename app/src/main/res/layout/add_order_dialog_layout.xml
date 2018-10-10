@@ -6,9 +6,54 @@
     android:background="#ffffff"
     android:orientation="vertical"
     android:padding="@dimen/fab_margin">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Ordered Quantity 400"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/message"
+            android:textSize="12sp"
+            android:layout_below="@+id/productName" />
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/totalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/productName"
+            android:text="Total Price $6,00"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/message"
+            android:textSize="12sp" />
+
+        <TextView
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/productName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Product Name"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/message"
+            android:textSize="16sp"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:textStyle="bold"/>
+    </RelativeLayout>
 
     <LinearLayout
+        android:visibility="invisible"
         android:weightSum="3"
         android:orientation="horizontal"
         android:layout_width="match_parent"

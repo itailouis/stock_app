@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,9 +18,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -38,9 +41,12 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import talitha_koum.milipade.com.app.afdis.Mockdata.ShopMock;
+import talitha_koum.milipade.com.app.afdis.App;
 import talitha_koum.milipade.com.app.afdis.R;
+import talitha_koum.milipade.com.app.afdis.SplashActivity;
 import talitha_koum.milipade.com.app.afdis.adapters.ShopAdapter;
+import talitha_koum.milipade.com.app.afdis.data.AfdisController;
+import talitha_koum.milipade.com.app.afdis.data.AfidsContract;
 import talitha_koum.milipade.com.app.afdis.geofance.Constants;
 import talitha_koum.milipade.com.app.afdis.geofance.GeofenceBroadcastReceiver;
 import talitha_koum.milipade.com.app.afdis.geofance.GeofenceErrorMessages;
@@ -56,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private ShopAdapter adapter;
     private ArrayList<Shop> shops;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private AfdisController DBcontroller;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
 
     private enum PendingGeofenceTask {
@@ -83,21 +90,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         setSupportActionBar(toolbar);
         mGeofenceList = new ArrayList<>();
         mGeofencePendingIntent = null;
-
+        DBcontroller = new AfdisController(this);
         // Get the geofences used. Geofence data is hard coded in this sample.
         //populateGeofenceList();
         mGeofencingClient = LocationServices.getGeofencingClient(this);
 
 
-        if (true) {
+        if (!App.getPrefManager(MainActivity.this).isLogedIn()) {
 
             // Opening UserProfileActivity .
             /// Intent intent = new Intent(MainActivity.this, UserAuthActivity.class);
             Intent intent = new Intent(MainActivity.this, UserAuthActivity.class);
-            //startActivity(intent);
-            //finish();
-            populateGeofenceList();
+            startActivity(intent);
+            finish();
+           ;
         }
+        populateGeofenceList();
         recyclerView = (RecyclerView) findViewById(R.id.list_shops);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -119,7 +127,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 new Runnable() {
                     @Override
                     public void run() {
-                        getInbox();
+                        //getInbox();
+                        getShops();
                     }
                 }
         );
@@ -130,8 +139,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 // when chat is clicked, launch full chat thread activity
                 Shop shop = shops.get(position);
                 Intent intent = new Intent(MainActivity.this, ShopActivity.class);
-                intent.putExtra("shop_id", shop.getShop_id());
-                intent.putExtra("shop_name", shop.getShop_name());
+                App.getPrefManager(MainActivity.this).setShopName(shop.getShop_name());
+                App.getPrefManager(MainActivity.this).setShopId(shop.getShop_id());
+                //intent.putExtra("shop_id", shop.getShop_id());
+                //intent.putExtra("shop_name", shop.getShop_name());
                 startActivity(intent);
             }
 
@@ -144,9 +155,55 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     }
 
+    private void getShops() {
+        swipeRefreshLayout.setRefreshing(true);
+        DBcontroller.open();
+        shops.clear();
+      Cursor cursor = DBcontroller.readEntry();
+        while (cursor.moveToNext()) {
+            Shop shop = new Shop();
+            int idx = cursor.getColumnIndex(AfidsContract.ShopEntry.COL_SHOP_ID);
+            int idy = cursor.getColumnIndex(AfidsContract.ShopEntry.COL_SHOP_NAME);
+            int ida = cursor.getColumnIndex(AfidsContract.ShopEntry.COL_SHOP_STATUS);
+            int idb = cursor.getColumnIndex(AfidsContract.ShopEntry.COL_SHOP_LAT);
+            int idc = cursor.getColumnIndex(AfidsContract.ShopEntry.COL_SHOP_LON);
+            int ide = cursor.getColumnIndex(AfidsContract.ShopEntry.COL_SHOP_LAST_VISIT);
+            int idr = cursor.getColumnIndex(AfidsContract.ShopEntry.COL_SHOP_LOCATION);
+            shop.setShop_id(cursor.getString(idx));
+            shop.setShop_name(cursor.getString(idy));
+            shop.setLast_visited(cursor.getString(ide));
+            shops.add(shop);
+        }
+        adapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+       // MenuInflater inflater = getMenuInflater();
+        //inflater.inflate(R.menu.menu_main, menu);
+
+       /* // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.product_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //itemArrayAdapter.filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //itemArrayAdapter.filter(newText);
+                return true;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);*/
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -162,16 +219,29 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_plan) {
+            startActivity(new Intent(MainActivity.this,PlanActivity.class));
+            return true;
+        }
+        if (id == R.id.action_logout) {
+            App.getPrefManager(MainActivity.this).clear();
+            DBcontroller.open();
+            //DBcontroller.empty();
+            startActivity(new Intent(MainActivity.this, SplashActivity.class));
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void getInbox() {
+    private void lgetInbox() {
         swipeRefreshLayout.setRefreshing(true);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
+        ///Call<ShopResponse> call = apiService.getShop(App.getPrefManager(MainActivity.this).getUser().getId());
         Call<ShopResponse> call = apiService.getShop("1");
+
         call.enqueue(new Callback<ShopResponse>() {
             @Override
             public void onResponse(Call<ShopResponse> call, Response<ShopResponse> response) {
@@ -204,7 +274,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         // swipe refresh is performed, fetch the messages again
-        getInbox();
+        //getInbox();
+        getShops();
     }
 
     private GeofencingRequest getGeofencingRequest() {
