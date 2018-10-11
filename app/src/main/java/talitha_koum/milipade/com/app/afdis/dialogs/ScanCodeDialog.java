@@ -40,6 +40,7 @@ public class ScanCodeDialog extends DialogFragment implements QRCodeReaderView.O
     public ScanCodeDialog() {
 
     }
+
     private final String TAG = ScanCodeDialog.class.getSimpleName();
     private SimpleDialogListener mHost;
     private static final float BEEP_VOLUME = 0.15f;
@@ -48,17 +49,17 @@ public class ScanCodeDialog extends DialogFragment implements QRCodeReaderView.O
     private QRCodeReaderView qrCodeReaderView;
     //private ViewfinderView viewfinderView;
     private MediaPlayer mediaPlayer;
-    private String results="";
-
+    private String results = "";
 
 
     private final MediaPlayer.OnCompletionListener beepListener = new BeepListener();
     //private SharedPreferences settings;
-    private boolean playBeep=true;
-    private boolean vibrate=true;
+    private boolean playBeep = true;
+    private boolean vibrate = true;
 
     public interface SimpleDialogListener {
         void onPositiveResult(String dlg);
+
         void onNegativeResult(String dlg);
 
     }
@@ -71,7 +72,7 @@ public class ScanCodeDialog extends DialogFragment implements QRCodeReaderView.O
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Create the custom layout using the LayoutInflater class
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View v = inflater.inflate(R.layout.scan_layout,null);
+        View v = inflater.inflate(R.layout.scan_layout, null);
         qrCodeReaderView = (QRCodeReaderView) v.findViewById(R.id.preview_view);
         //viewfinderView = (ViewfinderView) v.findViewById(R.id.ViewfinderView);
         //viewfinderView.
@@ -89,6 +90,7 @@ public class ScanCodeDialog extends DialogFragment implements QRCodeReaderView.O
         builder.setView(v);
         return builder.create();
     }
+
     @Override
     public void onCancel(DialogInterface dlg) {
         super.onCancel(dlg);
@@ -99,7 +101,7 @@ public class ScanCodeDialog extends DialogFragment implements QRCodeReaderView.O
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mHost = (SimpleDialogListener)activity;
+        mHost = (SimpleDialogListener) activity;
     }
 
     private void initQRCodeReaderView() {
@@ -111,21 +113,32 @@ public class ScanCodeDialog extends DialogFragment implements QRCodeReaderView.O
         qrCodeReaderView.startCamera();
 
     }
-    @Override
+
     public void onQRCodeRead(Result result, PointF[] points) {
         //Snackbar.make(qrCodeReaderView, result.getBarcodeFormat()+"  "+result.getText(), Snackbar.LENGTH_SHORT).show();
         playBeepSoundAndVibrate();
         qrCodeReaderView.stopCamera();
-        if (result.getBarcodeFormat()== BarcodeFormat.QR_CODE){
+        if (result.getBarcodeFormat() == BarcodeFormat.QR_CODE) {
             mHost.onNegativeResult("no results found ");
             dismiss();
-        }else{
+        } else {
             mHost.onPositiveResult(result.getText());
             dismiss();
         }
         //qrCodeReaderView.startCamera();
 
     }
+
+    @Override
+    public void onQRCodeRead(String result, PointF[] points) {
+        //Snackbar.make(qrCodeReaderView, result.getBarcodeFormat()+"  "+result.getText(), Snackbar.LENGTH_SHORT).show();
+        playBeepSoundAndVibrate();
+        qrCodeReaderView.stopCamera();
+        mHost.onPositiveResult(result);
+        //qrCodeReaderView.startCamera();
+
+    }
+
     private void initBeepSound() {
         if (playBeep && mediaPlayer == null) {
             // The volume on STREAM_SYSTEM is not adjustable, and users found it
@@ -157,31 +170,35 @@ public class ScanCodeDialog extends DialogFragment implements QRCodeReaderView.O
             vibrator.vibrate(VIBRATE_DURATION);
         }
     }
+
     private static class BeepListener implements MediaPlayer.OnCompletionListener {
         public void onCompletion(MediaPlayer mediaPlayer) {
             mediaPlayer.seekTo(0);
         }
     }
+
     private void requestCameraPermission() {
 
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
             Snackbar.make(getActivity().findViewById(android.R.id.content), "Camera access is required for QR code scanner.",
                     Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
-                @Override public void onClick(View view) {
-                    requestPermissions( new String[] {Manifest.permission.CAMERA}, MY_PERMISSION_REQUEST_CAMERA);
+                @Override
+                public void onClick(View view) {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_PERMISSION_REQUEST_CAMERA);
                 }
             }).show();
-        } else{
+        } else {
             Snackbar.make(getActivity().findViewById(android.R.id.content), "Requesting camera permission. Required for QR code scanner.",
                     Snackbar.LENGTH_SHORT).show();
-            requestPermissions(new String[] {Manifest.permission.CAMERA}, MY_PERMISSION_REQUEST_CAMERA);
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_PERMISSION_REQUEST_CAMERA);
         }
 
 
     }
 
-    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode != MY_PERMISSION_REQUEST_CAMERA) {
             return;
         }
