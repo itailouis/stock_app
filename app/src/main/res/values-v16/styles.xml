@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.Display1" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:fontFamily">@font/nunito_regular</item>
+    </style>
+
+    <style name="AppTheme.Headline" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">@font/nunito_regular</item>
+    </style>
+
+    <style name="AppTheme.Count" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">@font/chakra_petch_semi</item>
+        <item name="android:textSize">36sp</item>
+    </style>
+
+    <style name="AppTheme.Subtitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:fontFamily">@font/nunito_regular</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="android:textColor">@color/colorText</item>
+        <!--API 16-->
+        <item name="android:fontFamily">@font/nunito_regular</item>
+        <item name="fontFamily">@font/nunito_regular</item>
+        <item name="android:spinnerDropDownItemStyle">@style/DropDownItemStyle</item>
+    </style>
+
+
+    <style name="DropDownItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:textAppearance">@style/DropDownItemTextStyle</item>
+    </style>
+
+    <style name="DropDownItemTextStyle" parent="@android:style/Widget">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorRed</item>
+    </style>
+</resources>

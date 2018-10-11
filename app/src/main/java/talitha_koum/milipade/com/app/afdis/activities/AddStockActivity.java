@@ -241,7 +241,7 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
                 file = Uri.fromFile(getOutputMediaFile());
                 mImageUrl = file.getPath();
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
-
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivityForResult(intent, 100);
 
             }

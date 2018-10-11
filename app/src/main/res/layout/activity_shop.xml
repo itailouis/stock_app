@@ -24,9 +24,7 @@
             android:background="@color/colorPrimary"
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/colorAccent"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/colorTextPrimary"
-            app:tabTextColor="@color/colorTextDisable" />
+            app:tabMode="fixed" />
     </android.support.design.widget.AppBarLayout>
 
 

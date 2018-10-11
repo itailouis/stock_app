@@ -117,8 +117,8 @@ public class StocksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((StocksAdapter.ViewHolder) holder).dateDay.setText(getDay(stock.getDate_created()));
             ((StocksAdapter.ViewHolder) holder).dateMonth.setText(getMonth(stock.getDate_created()));
             ((StocksAdapter.ViewHolder) holder).productFlag.setText("Buffer level:"+stock.getInstock_diff());
-            ((StocksAdapter.ViewHolder) holder).productQuantity.setText("Quantity :"+stock.getProduct_quantity());
-            ((StocksAdapter.ViewHolder) holder).productBreakages.setText("Breakages :"+stock.getBreakages());
+            ((StocksAdapter.ViewHolder) holder).productQuantity.setText(stock.getProduct_quantity());
+            ((StocksAdapter.ViewHolder) holder).productBreakages.setText(stock.getBreakages());
         }
 
     private String getMonth(String date_created) {

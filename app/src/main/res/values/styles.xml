@@ -6,6 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="fontFamily">@font/nunito_regular</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -16,5 +19,24 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.Display1" parent="TextAppearance.AppCompat.Display1"></style>
+
+    <style name="AppTheme.Subtitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="AppTheme.Headline" parent="TextAppearance.AppCompat.Headline"></style>
+
+    <style name="AppTheme.Count" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">36sp</item>
+    </style>
+
+    <style name="AppTheme.EditText">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColorHint">@color/message</item>
+        <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="backgroundTint">#aaa</item>
+    </style>
 
 </resources>
