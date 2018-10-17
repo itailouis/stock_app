@@ -7,10 +7,12 @@
 
     <style name="AppTheme.Headline" parent="TextAppearance.AppCompat.Headline">
         <item name="android:fontFamily">@font/nunito_regular</item>
+        <item name="android:textColor">@color/colorText</item>
     </style>
 
     <style name="AppTheme.Count" parent="TextAppearance.AppCompat.Headline">
         <item name="android:fontFamily">@font/chakra_petch_semi</item>
+        <item name="fontFamily">@font/chakra_petch_semi</item>
         <item name="android:textSize">36sp</item>
     </style>
 
