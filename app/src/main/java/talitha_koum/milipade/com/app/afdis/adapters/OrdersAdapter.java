@@ -86,7 +86,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
             Orders order = orders.get(position);
-            ((OrdersAdapter.ViewHolder) holder).productName.setText(order.getProduct_name());
+            ((OrdersAdapter.ViewHolder) holder).productName.setText(order.getProduct_name()+" "+order.getProduct_size()+"  ML");
             ((OrdersAdapter.ViewHolder) holder).dateDay.setText(getDay(order.getDate_created()));
             ((OrdersAdapter.ViewHolder) holder).dateMonth.setText(getMonth(order.getDate_created()));
             ((OrdersAdapter.ViewHolder) holder).productQuantity.setText("Quantity ordered :"+order.getQuantity_ordered());

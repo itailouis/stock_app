@@ -2,6 +2,8 @@ package talitha_koum.milipade.com.app.afdis.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +15,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.Toolbar;
@@ -32,12 +35,16 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -45,6 +52,8 @@ import java.util.TimerTask;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import pl.aprilapps.easyphotopicker.DefaultCallback;
+import pl.aprilapps.easyphotopicker.EasyImage;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,11 +70,19 @@ import talitha_koum.milipade.com.app.afdis.responses.StockSaveResponse;
 import talitha_koum.milipade.com.app.afdis.utils.CustomToast;
 
 public class AddStockActivity extends AppCompatActivity implements ScanCodeDialog.SimpleDialogListener  {
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 234;
     ImageView ShowSelectedImage;
     public final static String TAG = AddStockActivity.class.getSimpleName();
     private static final int REQUEST_CAMERA = 23;
     private static final int SELECT_FILE = 1;
     private static final int CAMERA_REQUEST = 1888;
+
+    private static final int REQUEST_CAPTURE_IMAGE = 100;
+
+    public static final int REQUEST_IMAGE = 100;
+    public static final int REQUEST_PERMISSION = 200;
+    private String imageFilePath = "";
+
     private ImageView imageView;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     Bitmap FixBitmap;
@@ -87,9 +104,10 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
     //ArrayAdapter<String>  adapter;
     ArrayAdapter<String> spinnerAdapter;
     String[] productNames;
-
+    private static Dialog mDialog;
     String product_id;
     private Uri file   ;
+   // String imageFilePath;
     //String[] products;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -106,9 +124,12 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
         getSupportActionBar().setTitle(shop_name);
         sdf = new SimpleDateFormat("yyyy-MM-dd");//0000-00-00
         date = new Date();
-
-        getDataProducts();
-
+         getDataProducts();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_PERMISSION);
+        }
         productNames =  new String[products.size()];
         ImageButton scanbtn = findViewById(R.id.scan_btn);
         ShowSelectedImage = (ImageView)findViewById(R.id.facing_image);
@@ -146,24 +167,24 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
 
         productName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-           public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //loadSpinner((Product) adapterView.getItemAtPosition(i));
-               //Toast.makeText(AddStockActivity.this, "Clicked item from auto completion list " + adapterView.getItemAtPosition(i), Toast.LENGTH_SHORT).show();
-          }
-       });
+                //Toast.makeText(AddStockActivity.this, "Clicked item from auto completion list " + adapterView.getItemAtPosition(i), Toast.LENGTH_SHORT).show();
+            }
+        });
         productName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(AddStockActivity.this, "Clicked item from auto completion list ", Toast.LENGTH_SHORT).show();
             }
         });
-       productName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        productName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Product fruit = (Product) adapterView.getItemAtPosition(i);
                 // productName.setText(fruit.getProduct_name());
                 product_id = fruit.getProduct_id();
-                Toast.makeText(AddStockActivity.this, product_id+"", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AddStockActivity.this, product_id+"", Toast.LENGTH_SHORT).show();
                 //loadSpinner((Product) adapterView.getItemAtPosition(i));
                 //Toast.makeText(AddStockActivity.this, "Clicked item from auto completion list " + adapterView.getItemAtPosition(i), Toast.LENGTH_SHORT).show();
 
@@ -178,10 +199,10 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
         productName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-              Product fruit = (Product) adapterView.getItemAtPosition(i);
-               // productName.setText(fruit.getProduct_name());
+                Product fruit = (Product) adapterView.getItemAtPosition(i);
+                // productName.setText(fruit.getProduct_name());
                 product_id = fruit.getProduct_id();
-                Toast.makeText(AddStockActivity.this, product_id+"", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AddStockActivity.this, product_id+"", Toast.LENGTH_SHORT).show();
             }
         });
         productName.addTextChangedListener(new TextWatcher() {
@@ -215,7 +236,7 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
 
             public void onNothingSelected(
                     AdapterView<?> adapterView) {
-                }
+            }
         });
 
         productQuantity= (EditText) findViewById(R.id.quantity);
@@ -229,20 +250,73 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
         facingProductNumber= (EditText)findViewById(R.id.facing_inline);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-           // takePictureButton.setEnabled(false);
+            // takePictureButton.setEnabled(false);
             ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+        }
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) this, Manifest.permission.CAMERA)) {
+
+
+            } else {
+                ActivityCompat.requestPermissions((Activity) this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+            }
+
         }
 
 
         ShowSelectedImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                file = Uri.fromFile(getOutputMediaFile());
-                mImageUrl = file.getPath();
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
+                EasyImage.openCameraForImage(AddStockActivity.this,0);
+                //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //file = Uri.fromFile(getOutputMediaFile());
+                //mImageUrl = file.getPath();
+                //intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
+                //startActivityForResult(intent, 100);
+               /* Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if(pictureIntent.resolveActivity(getPackageManager()) != null){
+                    //Create a file to store the image
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                    } catch (IOException ex) {
+                        // Error occurred while creating the File
 
-                startActivityForResult(intent, 100);
+                    }
+                    if (photoFile != null) {
+                        //Uri photoURI = FileProvider.getUriForFile(AddStockActivity.this,                                                                                                    "com.example.android.provider", photoFile);pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        //startActivityForResult(pictureIntent, REQUEST_CAPTURE_IMAGE);
+
+                        this,
+                                "com.example.android.fileprovider",
+                                photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                    }*/
+                //openCameraIntent();
+                /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Ensure that there's a camera activity to handle the intent
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    // Create the File where the photo should go
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                    } catch (IOException ex) {
+                        // Error occurred while creating the File
+
+                    }
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        Uri photoURI = FileProvider.getUriForFile(AddStockActivity.this, "talitha_koum.milipade.com.app.afdis", photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(takePictureIntent, REQUEST_CAPTURE_IMAGE);
+                    }
+                }*/
+
+
+
 
             }
         });
@@ -289,9 +363,13 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
                     progressDialog.show();
 
                     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                    File file = new File(mImageUrl);
+                    //File file = new File(mImageUrl);
+                    File file = new File(imageFilePath);
+
                     RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
 
+                    if(product_id==null||product_id=="")
+                        product_id= "1";
 
                     RequestBody product_id_ = RequestBody.create(MediaType.parse("text/plain"), product_id);
                     RequestBody ShopId = RequestBody.create(MediaType.parse("text/plain"), shop_id);
@@ -358,7 +436,7 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
 
                         @Override
                         public void onFailure(Call<StockSaveResponse> call, Throwable t) {
-                            Toast.makeText(AddStockActivity.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(AddStockActivity.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
                             progressDialog.dismiss();
 
                         }
@@ -375,24 +453,63 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
         if (requestCode == 0) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-               // takePictureButton.setEnabled(true);
+                // takePictureButton.setEnabled(true);
             }
         }
     }
     //private String getProductID(String productname) {
-       // return productname;
-   // }
+    // return productname;
+    // }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 100) {
-            if (resultCode == RESULT_OK) {
-                ShowSelectedImage.setImageURI(file);
-            }
+       // if (requestCode == 100) {
+           // if (resultCode == RESULT_OK) {
+             //   ShowSelectedImage.setImageURI(file);
+          //  }
+      //  }
+
+       /* if (resultCode == Activity.RESULT_OK) {
+            Glide.with(this).load(imageFilePath).into(ShowSelectedImage);
         }
+        else if(resultCode == Activity.RESULT_CANCELED) {
+            // User Cancelled the action
+        }*/
+
+        /*if (requestCode == REQUEST_IMAGE) {
+            if (resultCode == RESULT_OK) {
+                //ShowSelectedImage.setImageURI(Uri.parse(imageFilePath));
+                Glide.with(this).load(imageFilePath).into(ShowSelectedImage);
+            }
+            else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "You cancelled the operation", Toast.LENGTH_SHORT).show();
+            }
+        }*/
+       /* if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            //don't compare the data to null, it will always come as  null because we are providing a file URI, so load with the imageFilePath we obtained before opening the cameraIntent
+            Glide.with(this).load(imageFilePath).into(ShowSelectedImage);
+            // If you are using Glide.
+        }*/
+        super.onActivityResult(requestCode, resultCode, data);
+
+        EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
+            @Override
+            public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
+                //Some error handling
+            }
+
+            @Override
+            public void onImagesPicked(List<File> imagesFiles, EasyImage.ImageSource source, int type) {
+                //Handle the images
+                Glide.with(AddStockActivity.this).load(imagesFiles.get(0)).into(ShowSelectedImage);
+               // onPhotosReturned(imagesFiles);
+                imageFilePath=imagesFiles.get(0).getAbsolutePath();
+            }
+        });
+
+
     }
     private static File getOutputMediaFile(){
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "CameraDemo");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "CameraDemo");
 
         if (!mediaStorageDir.exists()){
             if (!mediaStorageDir.mkdirs()){
@@ -401,12 +518,11 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
         }
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        return new File(mediaStorageDir.getPath() + File.separator +
-                "IMG_"+ timeStamp + ".jpg");
+        return new File(mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg");
     }
     private void getProducts() {
 
-         //productName = new String[products.size()];
+        //productName = new String[products.size()];
         for(int i=0;i<productNames.length;i++){
             //Toast.makeText(AddStockActivity.this, products.get(i).getProduct_name()+"", Toast.LENGTH_SHORT).show();
             productNames[i] = products.get(i).getProduct_name();
@@ -500,45 +616,47 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
         productMl.setWillNotDraw(false);
     }
     private void loadtheSpinner() {
-       // ArrayAdapter<String> adapter;
+        // ArrayAdapter<String> adapter;
         Set<String> set = new HashSet<String>();
         String[] data = new String[]{};
-       // if(itemAtPosition.getSize().getSize_125()=="1"){
-            set.add("125");
-       // }
-      //  if(itemAtPosition.getSize().getSize_150()=="1"){
-            set.add("l50");
-       // }
-       // if(itemAtPosition.getSize().getSize_175()=="1"){
-            set.add("75");
-       // }
-       // if(itemAtPosition.getSize().getSize_200()=="1"){
-            set.add("200");
-       // }
-       // if(itemAtPosition.getSize().getSize_200_pet()=="1"){
-            set.add("200 Pet");
-       // }
-       // if(itemAtPosition.getSize().getSize_275()=="1"){
-            set.add("275");
-      //  }
-      //  if(itemAtPosition.getSize().getSize_330()=="1"){
-            set.add("330");
-       // }
-       // if(itemAtPosition.getSize().getSize_340()=="1"){
-            set.add("340");
-       // }
-       /// if(itemAtPosition.getSize().getSize_346()=="1"){
-            set.add("346");
-       /// }
+
+
+        // if(itemAtPosition.getSize().getSize_175()=="1"){
+        set.add("75");
+        // }
+        //  if(itemAtPosition.getSize().getSize_150()=="1"){
+        set.add("150");
+        // }
+        // if(itemAtPosition.getSize().getSize_125()=="1"){
+        set.add("125");
+        //       // }
+        // if(itemAtPosition.getSize().getSize_200()=="1"){
+        set.add("200");
+        // }
+        // if(itemAtPosition.getSize().getSize_200_pet()=="1"){
+        set.add("200 Pet");
+        // }
+        // if(itemAtPosition.getSize().getSize_275()=="1"){
+        set.add("275");
+        //  }
+        //  if(itemAtPosition.getSize().getSize_330()=="1"){
+        set.add("330");
+        // }
+        // if(itemAtPosition.getSize().getSize_340()=="1"){
+        set.add("340");
+        // }
+        /// if(itemAtPosition.getSize().getSize_346()=="1"){
+        set.add("346");
+        /// }
         ///if(itemAtPosition.getSize().getSize_375()=="1"){
-            set.add("375");
-       /// }
-       /// if(itemAtPosition.getSize().getSize_750()=="1"){
-            set.add("750");
-       // }
-       // if(itemAtPosition.getSize().getSize_750_pet()=="1"){
-            set.add("750 Pet");
-       // }
+        set.add("375");
+        /// }
+        /// if(itemAtPosition.getSize().getSize_750()=="1"){
+        set.add("750");
+        // }
+        // if(itemAtPosition.getSize().getSize_750_pet()=="1"){
+        set.add("750 Pet");
+        // }
 
         List<String> list = new ArrayList<String>(set);
         spinnerAdapter = new ArrayAdapter<String>(AddStockActivity.this, android.R.layout.simple_spinner_item, list);
@@ -577,6 +695,8 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
 
 
     private void getDataProducts(){
+        //mDialog.setCancelable(true);
+        // mDialog.show();
         final ArrayList<Product> dataList = new ArrayList<Product>();
         //dataList.add("--Choose Product--");
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -599,8 +719,9 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
                     //Toast.makeText(AddStockActivity.this, products.get(i).getProduct_name()+"", Toast.LENGTH_SHORT).show();
                     productNames[i] = products.get(i).getProduct_name();
                 }
+                //mDialog.dismiss();
                 Toast.makeText(AddStockActivity.this, productNames.length+"", Toast.LENGTH_SHORT).show();
-               adapter = new  ProductAdapter(AddStockActivity.this, R.layout.list_item_content, products);
+                adapter = new  ProductAdapter(AddStockActivity.this, R.layout.list_item_content, products);
                 //adapter = new ArrayAdapter<String>(AddStockActivity.this, android.R.layout.select_dialog_item, productNames);
                 productName.setThreshold(2);
                 productName.setAdapter(adapter);
@@ -609,7 +730,7 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
 
             @Override
             public void onFailure(Call<ProductSizeResponse> call, Throwable t) {
-                Toast.makeText(AddStockActivity.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddStockActivity.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
 
             }
@@ -641,7 +762,7 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
 
             @Override
             public void onFailure(Call<SaveResponse> call, Throwable t) {
-                Toast.makeText(AddStockActivity.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(AddStockActivity.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
 
             }
@@ -654,7 +775,35 @@ public class AddStockActivity extends AppCompatActivity implements ScanCodeDialo
     public void onNegativeResult(String dlg) {
 
     }
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "IMG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
 
+        imageFilePath = image.getAbsolutePath();
+        return image;
+    }
 
+    private void openCameraIntent() {
+        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (pictureIntent.resolveActivity(getPackageManager()) != null) {
 
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+            Uri photoUri = FileProvider.getUriForFile(this, getPackageName() +".provider", photoFile);
+            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            startActivityForResult(pictureIntent, REQUEST_IMAGE);
+        }
+    }
 }

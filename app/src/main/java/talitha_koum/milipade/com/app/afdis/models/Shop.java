@@ -1,11 +1,14 @@
 package talitha_koum.milipade.com.app.afdis.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by TALITHA_KOUM on 3/9/2018.
  * file for the  Afdis. project
  * in talitha_koum.milipade.com.app.afdis.models
  */
-public class Shop {
+public class  Shop implements Parcelable{
     private User user;
     private String shop_id;
     private String shop_name;
@@ -17,6 +20,28 @@ public class Shop {
 
     public Shop() {
     }
+
+    protected Shop(Parcel in) {
+        shop_id = in.readString();
+        shop_name = in.readString();
+        shop_location = in.readInt();
+        shop_long = in.readString();
+        shop_lat = in.readString();
+        status = in.readString();
+        last_visited = in.readString();
+    }
+
+    public static final Creator<Shop> CREATOR = new Creator<Shop>() {
+        @Override
+        public Shop createFromParcel(Parcel in) {
+            return new Shop(in);
+        }
+
+        @Override
+        public Shop[] newArray(int size) {
+            return new Shop[size];
+        }
+    };
 
     public User getUser() {
         return user;
@@ -80,5 +105,21 @@ public class Shop {
 
     public void setLast_visited(String last_visited) {
         this.last_visited = last_visited;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(shop_id);
+        parcel.writeString(shop_name);
+        parcel.writeInt(shop_location);
+        parcel.writeString(shop_long);
+        parcel.writeString(shop_lat);
+        parcel.writeString(status);
+        parcel.writeString(last_visited);
     }
 }

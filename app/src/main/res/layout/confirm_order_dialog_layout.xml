@@ -53,7 +53,7 @@
     </RelativeLayout>
 
     <EditText
-        android:id="@+id/edit_quantity"
+        android:id="@+id/threshold_price"
         android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -61,14 +61,14 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:hint="Delivared Quantity"
+        android:hint="Received Quantity"
         android:singleLine="true"
         android:textColor="@color/colorPrimaryDark"
         android:textColorHint="@color/message"
         android:textSize="16sp" />
 
     <EditText
-        android:id="@+id/delivared_date"
+        android:id="@+id/threshold_quantity"
         android:inputType="date"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -76,7 +76,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:hint="Delivared Date"
+        android:hint="Received Date"
         android:singleLine="true"
         android:textColor="@color/colorPrimaryDark"
         android:textColorHint="@color/message"

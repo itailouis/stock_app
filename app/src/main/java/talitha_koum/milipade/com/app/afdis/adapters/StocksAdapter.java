@@ -97,7 +97,7 @@ public class StocksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
             Stock stock = stocks.get(position);
-            ((StocksAdapter.ViewHolder) holder).productName.setText(stock.getProduct_name());
+            ((StocksAdapter.ViewHolder) holder).productName.setText(stock.getProduct_name()+" "+stock.getProduct_size()+"ML");
 
             String timestamp = getTimeStamp("");
 

@@ -12,6 +12,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 import talitha_koum.milipade.com.app.afdis.models.Orders;
+import talitha_koum.milipade.com.app.afdis.models.Threshold;
 import talitha_koum.milipade.com.app.afdis.responses.InventoryHistoryResponse;
 import talitha_koum.milipade.com.app.afdis.responses.LoginResponse;
 import talitha_koum.milipade.com.app.afdis.responses.OrderHistoryResponse;
@@ -90,6 +91,40 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("api/visitplan")
     Call<PlanResponse> getVisitPlan(@Field("shops")String shop, @Field("date")String date, @Field("user_id")String user_id);
+
+    @POST("api/threshold")
+    Call<SaveResponse> saveThreshold(@Body Threshold threshold);
+
+
+    @Multipart
+    @POST("api/stocktake")
+    Call<talitha_koum.milipade.com.app.afdis.mergeapp.responses.StockSaveResponse> saveStockTake(@Part("product_id") RequestBody product_id,
+                                          @Part("date_created") RequestBody date_created,
+                                          @Part("shop_id") RequestBody shop_id,
+                                          @Part("user_id") RequestBody user_id,
+                                          @Part("product_quantity") RequestBody product_quantity,
+                                          @Part("breakages") RequestBody breakages,
+                                          @Part("product_size") RequestBody product_size,
+                                          @Part("inline") RequestBody inline,
+                                          @Part("total_shelf") RequestBody total_shelf,
+
+                                          @Part("price") RequestBody Price,
+                                          @Part("competitor_name_a") RequestBody competitor_name_a,
+                                          @Part("competitor_name_b") RequestBody competitor_name_b,
+                                          @Part("competitor_price_a") RequestBody competitor_price_a,
+                                          @Part("competitor_price_b") RequestBody competitor_price_b,
+
+                                          @Part("expiry") RequestBody expiry,
+                                          @Part("near_date") RequestBody near_date,
+                                          @Part MultipartBody.Part image);
+
+
+    //ProductSizeResponse
+
+    @GET("api/product")
+    Call<talitha_koum.milipade.com.app.afdis.mergeapp.responses.ProductSizeResponse> getProductList();
+
+
 
     //@GET("api/orderhistory?")
     //Call<OrderHistoryResponse> getOrderHistory(@Query("shop_id")String shop_id);

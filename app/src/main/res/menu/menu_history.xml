@@ -8,6 +8,11 @@
     android:title="@string/action_history"
     app:showAsAction="never" />
     <item
+        android:id="@+id/action_threshold"
+        android:orderInCategory="100"
+        android:title="@string/action_threshold"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"

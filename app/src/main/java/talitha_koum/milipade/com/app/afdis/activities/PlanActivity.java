@@ -1,6 +1,7 @@
 package talitha_koum.milipade.com.app.afdis.activities;
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -44,6 +46,7 @@ public class PlanActivity extends AppCompatActivity implements SwipeRefreshLayou
     private ActionMode actionMode;
     private AfdisController DBcontroller;
     private String arrayshopids="";
+    boolean done;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,21 +160,22 @@ public class PlanActivity extends AppCompatActivity implements SwipeRefreshLayou
     // deleting the messages from recycler view
     private void deleteMessages() {
         mAdapter.resetAnimationIndex();
-        List<Integer> selectedItemPositions =
-                mAdapter.getSelectedItems();
+        List<Integer> selectedItemPositions = mAdapter.getSelectedItems();
         for (int i = selectedItemPositions.size() - 1; i >= 0; i--) {
             arrayshopids=arrayshopids+","+messages.get(selectedItemPositions.get(i)).getShop_id();
             //mAdapter.removeData(selectedItemPositions.get(i));
         }
         mAdapter.notifyDataSetChanged();
-       // Toast.makeText(getApplicationContext(), "ids: " + arrayshopids, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getApplicationContext(), "ids: " + arrayshopids, Toast.LENGTH_SHORT).show();
         saveVisits(arrayshopids, App.getPrefManager(PlanActivity.this).getUser().getUser_id(),App.getPrefManager(PlanActivity.this).getShopId());
-        arrayshopids="";
+        if(done){
+            arrayshopids="";
+        }
 
     }
     private void saveVisits(String arrayshopids, String user_id, String shopId) {
 
-
+        //final boolean saveres;
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
         ///Call<ShopResponse> call = apiService.getShop(App.getPrefManager(MainActivity.this).getUser().getId());
@@ -183,21 +187,44 @@ public class PlanActivity extends AppCompatActivity implements SwipeRefreshLayou
                 // clear the inbox
                 PlanResponse planResponse = response.body();
                 if(planResponse.getData().getStatus()){
-                    Snackbar.make(recyclerView, planResponse.getData().getMessage(), Snackbar.LENGTH_LONG)
-                            .setAction("OK", null).show();
+                    done= true;
+                    Snackbar.make(recyclerView, planResponse.getData().getMessage(), Snackbar.LENGTH_LONG).setAction("OK", null).show();
                 }else{
-                    Snackbar.make(recyclerView, planResponse.getData().getMessage(), Snackbar.LENGTH_LONG)
-                            .setAction("OK", null).show();
+                    Snackbar.make(recyclerView, planResponse.getData().getMessage(), Snackbar.LENGTH_LONG).setAction("OK", null).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<PlanResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Snackbar mSnackBar = Snackbar.make(recyclerView, "Network Error ", Snackbar.LENGTH_LONG);
+
+                TextView mainTextView = (TextView) (mSnackBar.getView()).findViewById(android.support.design.R.id.snackbar_text);
+                TextView actionTextView = (TextView) (mSnackBar.getView()).findViewById(android.support.design.R.id.snackbar_action);
+
+                // To Change Snackbar Color
+                mSnackBar.getView().setBackgroundColor(getResources().getColor(R.color.colorBlack));
+                done= false;
+                // To Apply Custom Fonts for Message and Action
+                //Typeface font = Typeface.createFromAsset(getAssets(), "Lato-Regular.ttf");
+                //mainTextView.setTypeface(font);
+                //actionTextView.setTypeface(font);
+
+                // To Change Text Color for Message and Action
+                mainTextView.setTextColor(Color.YELLOW);
+                actionTextView.setTextColor(Color.YELLOW);
+
+                mSnackBar.setAction("RETRY", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        deleteMessages();
+                    }
+                });
+                mSnackBar.show();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
     }
     public static String getCurrentTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");//dd/MM/yyyy

@@ -11,7 +11,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.BuildConfig;
+//import android.support.v4.BuildConfig;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +47,7 @@ import talitha_koum.milipade.com.app.afdis.SplashActivity;
 import talitha_koum.milipade.com.app.afdis.adapters.ShopAdapter;
 import talitha_koum.milipade.com.app.afdis.data.AfdisController;
 import talitha_koum.milipade.com.app.afdis.data.AfidsContract;
+import talitha_koum.milipade.com.app.afdis.dialogs.ThreshholdDialog;
 import talitha_koum.milipade.com.app.afdis.geofance.Constants;
 import talitha_koum.milipade.com.app.afdis.geofance.GeofenceBroadcastReceiver;
 import talitha_koum.milipade.com.app.afdis.geofance.GeofenceErrorMessages;
@@ -56,7 +57,7 @@ import talitha_koum.milipade.com.app.afdis.network.ApiInterface;
 import talitha_koum.milipade.com.app.afdis.responses.ShopResponse;
 import talitha_koum.milipade.com.app.afdis.utils.SimpleDividerItemDecoration;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, OnCompleteListener<Void> {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, ShopAdapter.ShopAdapterListener, OnCompleteListener<Void> ,ThreshholdDialog.ThreshholdDialogInteractionListener{
     private static final String TAG = MainActivity.class.getSimpleName();
     private RecyclerView recyclerView;
     private ShopAdapter adapter;
@@ -64,6 +65,50 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private SwipeRefreshLayout swipeRefreshLayout;
     private AfdisController DBcontroller;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+
+    @Override
+    public void onClick(int position) {
+        Shop shop = shops.get(position);
+        Intent intent = new Intent(MainActivity.this, ShopActivity.class);
+        App.getPrefManager(MainActivity.this).setShopName(shop.getShop_name());
+        App.getPrefManager(MainActivity.this).setShopId(shop.getShop_id());
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickViewThreshhold(int position) {
+        Shop shop = shops.get(position);
+        ThreshholdDialog dialog = new ThreshholdDialog();
+        Bundle b = new Bundle();
+        b.putParcelable("shop", shop);
+        dialog.setArguments(b);
+       dialog.show(getSupportFragmentManager(),"");
+    }
+
+    @Override
+    public void onLongClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onClickContainer(int position) {
+        Shop shop = shops.get(position);
+        Intent intent = new Intent(MainActivity.this, ShopActivity.class);
+        App.getPrefManager(MainActivity.this).setShopName(shop.getShop_name());
+        App.getPrefManager(MainActivity.this).setShopId(shop.getShop_id());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    @Override
+    public void onClosed() {
+
+    }
 
     private enum PendingGeofenceTask {
         ADD, REMOVE, NONE
@@ -114,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         // self user id is to identify the message owner
         //String selfUserId = App.getInstance().getPrefManager().getUser().getId();
         String selfUserId = "modock_id";
-        adapter = new ShopAdapter(this, shops, selfUserId);
+        adapter = new ShopAdapter(this, shops, selfUserId, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         addGeofencesButtonHandler();
@@ -133,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
         );
 
-        recyclerView.addOnItemTouchListener(new ShopAdapter.RecyclerTouchListener(getApplicationContext(), recyclerView, new ShopAdapter.ClickListener() {
+       /* recyclerView.addOnItemTouchListener(new ShopAdapter.RecyclerTouchListener(getApplicationContext(), recyclerView, new ShopAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 // when chat is clicked, launch full chat thread activity
@@ -150,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public void onLongClick(View view, int position) {
 
             }
-        }));
+        }));*/
 
 
     }
@@ -265,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             @Override
             public void onFailure(Call<ShopResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -355,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             setButtonsEnabledState();
 
             int messageId = getGeofencesAdded() ? R.string.geofences_added : R.string.geofences_removed;
-            Toast.makeText(this, getString(messageId), Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, getString(messageId), Toast.LENGTH_SHORT).show();
         } else {
             // Get the status code for the error and log it using a user-friendly message.
             String errorMessage = GeofenceErrorMessages.getErrorString(this, task.getException());
@@ -560,12 +605,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             public void onClick(View view) {
                                 // Build intent that displays the App settings screen.
                                 Intent intent = new Intent();
-                                intent.setAction(
-                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package",
-                                        BuildConfig.APPLICATION_ID, null);
-                                intent.setData(uri);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                //Uri uri = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null);
+                                //intent.setData(uri);
+                                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                             }
                         });

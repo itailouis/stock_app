@@ -17,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -102,7 +101,7 @@ public class OrdersFragment extends Fragment implements SwipeRefreshLayout.OnRef
         swipeRefreshLayout.setOnRefreshListener(this);
         orders = new ArrayList<>();
         //orders = ShopMock.getOrderList();
-        Toast.makeText(getContext(), "shop id " +mParam1, Toast.LENGTH_LONG).show();
+       // Toast.makeText(getContext(), "shop id " +mParam1, Toast.LENGTH_LONG).show();
         // self user id is to identify the message owner
         //String selfUserId = App.getInstance().getPrefManager().getUser().getId();
         String selfUserId = "modock_id";
@@ -212,7 +211,7 @@ public class OrdersFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
             @Override
             public void onFailure(Call<OrderResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });

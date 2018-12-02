@@ -18,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -30,6 +29,7 @@ import talitha_koum.milipade.com.app.afdis.activities.AddStockActivity;
 import talitha_koum.milipade.com.app.afdis.activities.ShopActivity;
 import talitha_koum.milipade.com.app.afdis.adapters.StocksAdapter;
 import talitha_koum.milipade.com.app.afdis.dialogs.AddOrderDialog;
+import talitha_koum.milipade.com.app.afdis.mergeapp.activities.HomeActivity;
 import talitha_koum.milipade.com.app.afdis.models.Stock;
 import talitha_koum.milipade.com.app.afdis.network.ApiClient;
 import talitha_koum.milipade.com.app.afdis.network.ApiInterface;
@@ -151,7 +151,7 @@ public class InventoryFragment extends Fragment implements SwipeRefreshLayout.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AddStockActivity.class);
+                Intent intent = new Intent(getContext(), HomeActivity.class);
                 intent.putExtra("shop_id", ShopActivity.shop_id);
                 intent.putExtra("shop_name", ShopActivity.shop_name);
                 startActivity(intent);
@@ -242,7 +242,7 @@ public class InventoryFragment extends Fragment implements SwipeRefreshLayout.On
 
             @Override
             public void onFailure(Call<StockResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });

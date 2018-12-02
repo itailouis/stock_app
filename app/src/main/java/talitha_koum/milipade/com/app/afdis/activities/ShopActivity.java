@@ -13,13 +13,15 @@ import android.view.MenuItem;
 import talitha_koum.milipade.com.app.afdis.App;
 import talitha_koum.milipade.com.app.afdis.R;
 import talitha_koum.milipade.com.app.afdis.adapters.ShopPagerAdapter;
+import talitha_koum.milipade.com.app.afdis.dialogs.ThreshholdDialog;
 import talitha_koum.milipade.com.app.afdis.fragments.InventoryFragment;
 import talitha_koum.milipade.com.app.afdis.fragments.OrdersFragment;
+import talitha_koum.milipade.com.app.afdis.models.Shop;
 
-public class ShopActivity extends AppCompatActivity implements  OrdersFragment.OnFragmentInteractionListener,InventoryFragment.OnFragmentInteractionListener {
+public class ShopActivity extends AppCompatActivity implements  OrdersFragment.OnFragmentInteractionListener,InventoryFragment.OnFragmentInteractionListener,ThreshholdDialog.ThreshholdDialogInteractionListener {
     private TabLayout tabLayout;
 
-    //This is our viewPager
+    //This is our viewPagert
     private ViewPager viewPager;
 
     //Fragments
@@ -86,6 +88,17 @@ public class ShopActivity extends AppCompatActivity implements  OrdersFragment.O
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_threshold) {
+            Shop shop = new Shop();
+            shop.setShop_id(shop_id );
+            shop.setShop_name(shop_name);
+            ThreshholdDialog dialog = new ThreshholdDialog();
+            Bundle b = new Bundle();
+            b.putParcelable("shop", shop);
+            dialog.setArguments(b);
+            dialog.show(getSupportFragmentManager(),"");
+        }
+
         if (id == R.id.action_history) {
             Intent intent = new Intent(ShopActivity.this, HistoryShopActivity.class);
             intent.putExtra("shop_id", shop_id);
@@ -129,6 +142,11 @@ public class ShopActivity extends AppCompatActivity implements  OrdersFragment.O
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onClosed() {
 
     }
 }

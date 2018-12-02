@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="51dp"
@@ -72,17 +73,20 @@
         android:textColor="#000000"
         />
 
-    <RelativeLayout
-        android:visibility="gone"
+    <ImageView
+
+        android:layout_marginRight="@dimen/fab_margin"
         android:layout_alignParentEnd="true"
         android:id="@+id/relative_layout_blocked_by_me"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_weight="0"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_more"/>
 
-        <TextView
+        <!--<TextView
+            android:visibility="gone"
             android:id="@+id/lastvisted"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,12 +97,13 @@
             android:layout_marginLeft="10dp"/>
 
         <ImageView
+            android:visibility="gone"
             android:padding="@dimen/fab_margin"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_below="@+id/lastvisted"
-            android:background="@drawable/bg_circle"/>
+            android:background="@drawable/ic_more"/>
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
 </RelativeLayout>

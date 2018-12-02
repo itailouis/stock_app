@@ -23,6 +23,7 @@ public class Orders implements Parcelable{
     private String  product_identifier;
     private String  product_category;
     private String product_size;
+    private String user_id;
 
     public Orders() {
     }
@@ -41,6 +42,7 @@ public class Orders implements Parcelable{
         product_identifier = in.readString();
         product_category = in.readString();
         product_size = in.readString();
+        user_id = in.readString();
     }
 
     public static final Creator<Orders> CREATOR = new Creator<Orders>() {
@@ -159,6 +161,14 @@ public class Orders implements Parcelable{
         this.product_size = product_size;
     }
 
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -179,5 +189,6 @@ public class Orders implements Parcelable{
         parcel.writeString(product_identifier);
         parcel.writeString(product_category);
         parcel.writeString(product_size);
+        parcel.writeString(user_id);
     }
 }

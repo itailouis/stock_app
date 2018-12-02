@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="afdis_images"
+        path="Android/data/talitha_koum.milipade.com.app.afdis/files/Pictures" />
+</paths>

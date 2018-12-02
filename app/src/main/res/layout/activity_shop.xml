@@ -26,12 +26,11 @@
             app:tabIndicatorColor="@color/colorAccent"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/colorTextPrimary"
-            app:tabTextColor="@color/colorTextDisable" />
+           />
     </android.support.design.widget.AppBarLayout>
 
 
     <include layout="@layout/content_shop" />
-
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -24,6 +24,7 @@ import java.util.TimerTask;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import talitha_koum.milipade.com.app.afdis.App;
 import talitha_koum.milipade.com.app.afdis.R;
 import talitha_koum.milipade.com.app.afdis.models.Orders;
 import talitha_koum.milipade.com.app.afdis.models.Stock;
@@ -141,8 +142,10 @@ public class AddOrderDialog extends DialogFragment {
                     order.setProduct_id(stock.getProduct_id());
                     order.setQuantity_ordered(quantity);
                     order.setProposed_delivery_date(date);
+                    order.setProduct_size(stock.getProduct_size());
                     order.setShop_id(stock.getShop_id());
                     order.setDate_created(date);
+                    order.setUser_id(App.getPrefManager(getContext()).getUser().getUser_id());
                     order.setOrder_status("1");
 
 

@@ -72,8 +72,8 @@ public class ConfirmOrderDialog extends DialogFragment {
         quantityOrdered.setText("Quantity :"+order.getQuantity_ordered());
         totalprice.setText(order.getProposed_delivery_date());
 
-        final EditText orderingQuantity= (EditText) v.findViewById(R.id.edit_quantity);
-        final EditText expectedDelivaryDate= (EditText) v.findViewById(R.id.delivared_date);
+        final EditText orderingQuantity= (EditText) v.findViewById(R.id.threshold_price);
+        final EditText expectedDelivaryDate= (EditText) v.findViewById(R.id.threshold_quantity);
         expectedDelivaryDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

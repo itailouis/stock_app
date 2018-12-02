@@ -67,5 +67,10 @@
     <string name="action_delete">Plan</string>
     <string name="action_logout">Logout</string>
     <string name="menu_search">Search</string>
+    <string name="action_more">Thresholds</string>
+    <string name="action_view_graph">Visit Shop</string>
+    <string name="action_threshold">Threshold</string>
+    <string name="action_sync_products">Sync Products</string>
+    <string name="action_sync_local">Sync  Data</string>
 
 </resources>

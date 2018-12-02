@@ -1,12 +1,15 @@
 package talitha_koum.milipade.com.app.afdis.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -30,25 +33,32 @@ public class ShopAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private String userId;
     private int SELF = 100;
     private static String today;
-
+    private ShopAdapterListener listener;
     private Context mContext;
     private ArrayList<Shop> shops;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView shopName, lastVisited;
+        ImageView more;
+        RelativeLayout container;
+
 
         public ViewHolder(View view) {
             super(view);
             shopName = (TextView) itemView.findViewById(R.id.shopname);
             lastVisited = (TextView) itemView.findViewById(R.id.lastvisted);
+            more = itemView.findViewById(R.id.more_btn);
+            container = itemView.findViewById(R.id.container);
+
         }
     }
 
 
-    public ShopAdapter(Context mContext, ArrayList<Shop> shops, String userId) {
+    public ShopAdapter(Context mContext, ArrayList<Shop> shops, String userId, ShopAdapterListener listener) {
         this.mContext = mContext;
         this.shops = shops;
         this.userId = userId;
+        this.listener = listener;
 
         Calendar calendar = Calendar.getInstance();
         today = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
@@ -90,7 +100,63 @@ public class ShopAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      ((ViewHolder) holder).shopName.setText(shop.getShop_name());
      //((ViewHolder) holder).lastVisited.setText(shop.getLast_visited());
      ((ViewHolder) holder).lastVisited.setText(getTimeStamp(shop.getLast_visited()));
+        applyClickEvents((ViewHolder) holder, position);
     }
+
+    private void applyClickEvents(final ViewHolder holder, final int position) {
+        holder.more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //listener.onClick(position);
+                showPopupMenu( holder.more, holder, position);
+            }
+        });
+        holder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickContainer(position);
+                //showPopupMenu( holder.more, holder, position);
+            }
+        });
+    }
+
+    private void showPopupMenu(View view, ViewHolder holder, int position) {
+        PopupMenu popup = new PopupMenu(mContext, view);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu_shop_item, popup.getMenu());
+        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(holder,position));
+        popup.show();
+    }
+
+    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
+        ViewHolder holder;
+        View view;
+        int position;
+        public MyMenuItemClickListener(ViewHolder holder,int position) {
+            this.holder=  holder;
+            this.position = position;
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.action_view_more:
+                    listener.onClickViewThreshhold(position);
+                    //Toast.makeText(mContext, "Add to favourite", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.action_view_graph:
+                    listener.onClick(position);
+                    //Toast.makeText(mContext, "Play next", Toast.LENGTH_SHORT).show();
+                    //holder.full.setVisibility(View.VISIBLE);
+                    //holder.mini.setVisibility(View.VISIBLE);
+                    //holder.chart.setVisibility(View.VISIBLE);
+                    return true;
+                default:
+            }
+            return false;
+        }
+    }
+
 
     @Override
     public int getItemCount() {
@@ -117,11 +183,14 @@ public class ShopAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return timestamp;
 
     }
-    public interface ClickListener {
-        void onClick(View view, int position);
+    public interface ShopAdapterListener {
+        void onClick(int position);
+       void onClickViewThreshhold(int position);
         void onLongClick(View view, int position);
+
+        void onClickContainer(int position);
     }
-    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+   /* public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private GestureDetector gestureDetector;
         private ShopAdapter.ClickListener clickListener;
@@ -162,5 +231,5 @@ public class ShopAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
         }
-    }
+    }*/
 }
